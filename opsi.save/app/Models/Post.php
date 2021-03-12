@@ -25,21 +25,6 @@ class Post extends Model
         return $this->hasMany(Data::class);
     }
 
-    public function fieldDatas()
-    {
-        return $this->hasMany(Data::class);
-    }
-
-    public function relationship_children_posts()
-    {
-        return $this->hasManyThrough(Post::class, Data::class, 'relationship_id', 'id', 'id', 'post_id');
-    }
-
-    public function relationship_children()
-    {
-        return $this->hasMany(Data::class, 'relationship_id');
-    }
-
     public function children()
     {
         return $this->hasMany(Post::class, 'parent_id');

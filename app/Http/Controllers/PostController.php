@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Data;
 use App\Models\PostType;
 use App\Models\User;
+use ArrayObject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -53,7 +54,6 @@ class PostController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        // $post = PostType::find($validated['post_type'])->posts()->create($validated);
 
         // Crée les nouvelles données sur le post grâce aux Fields
         $fields = PostType::find($validated['post_type'])->fields;
@@ -71,13 +71,26 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
+
         $validated = $request->validate([
             'name' => '',
             'content' => '',
             'parent_id' => '',
         ]);
-
         $post->update($validated);
+
+
+        if($request->has('content')){
+
+            $content = $post->content;
+            foreach ($request->input('content') as $key => $value) {
+                $content[$key] = $value;
+            }
+
+            $post->content = $content;
+            $post->save();
+        
+        }
 
         return back();
     }
@@ -86,7 +99,7 @@ class PostController extends Controller
     {
         if (auth::id() == $post->user_id) {
             return view('post.edit', ['post' => $post, 'posts' => Post::all()]);
-        }else{
+        } else {
             abort(403);
         }
     }

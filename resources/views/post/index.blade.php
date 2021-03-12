@@ -27,7 +27,6 @@
                     <th scope="col">Id</th>
                     <th scope="col py-3">Name</th>
                     <th scope="col">Type</th>
-                    <th scope="col">Content</th>
                     @isset($posttype)
                         @foreach ($posttype->fields as $field)
                             <th scope="col">{{ $field->name }}</th>
@@ -43,13 +42,14 @@
 
                     <tr>
                         <th scope="row">
-                            <a href="/posts/{{ $post->id }}">{{ $post->id }}</a>
+                            <a href="/posts/{{ $post->id }}/edit">{{ $post->id }}</a>
                         </th>
                         <td>
-                            <a href="/posts/{{ $post->id }}/edit">{{ $post->name }}</a>
+                            @isset($post->content['Name'])
+                                <a href="/posts/{{ $post->id }}/edit">{{ $post->content['Name'] }}</a>
+                            @endisset
                         </td>
                         <td>{{ $post->postType->name }}</td>
-                        <td>{{ $post->content }}</td>
                         {{-- Custom fields --}}
                         @isset($posttype)
                             @foreach ($posttype->fields as $field)
@@ -57,7 +57,9 @@
                                     @if ($field->type == 'Relationship')
                                         @if ($field->data($post))
                                             <a href="/posts/{{ $post->id }}/edit">
-                                                {{ $field->data($post)->relationship->name }}
+                                                @if ($field->data($post)->relationship)
+                                                    {{ $field->data($post)->relationship->name }}
+                                                @endif
                                             </a>
                                         @endif
                                     @else

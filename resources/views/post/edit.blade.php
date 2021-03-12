@@ -37,12 +37,6 @@
                 <input type="text" id="inputName" class="form-control" name="name" value="{{ $post->name }}">
             </div>
 
-            {{-- Content --}}
-            <div class="mb-3">
-                <label for="inputContent" class="col-form-label">Content</label>
-                <textarea name="content" id="inputContent" class="form-control" rows="10">{{ $post->content }}</textarea>
-            </div>
-
             {{-- Parent --}}
             <div class="mb-3">
                 <label for="parent" class="col-form-label">Parent</label>
@@ -59,61 +53,57 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
-        {{-- Fields --}}
         Fields
-        @foreach ($post->posttype->fields as $field)
-            @if ($field->data($post))
-                <form action="/datas/{{ $field->data($post)->id }}" method="post" class="mb-3">
-                    @csrf
-                    @method('PUT')
+        <form action="/posts/{{ $post->id }}" method="post" class="mb-3">
+            @csrf
+            @method('PUT')
 
-                    <div class="mb-3">
+            @foreach ($post->posttype->fields as $field)
 
-                        <label for="name" class="form-label">{{ $field->name }}</label>
+                <div class="mb-3">
 
-                        @if ($field->type == 'Relationship')
+                    {{-- Print label --}}
+                    <label for="input{{ $field->name }}" class="form-label">{{ $field->name }}</label>
 
-                            <select name="relationship_id" id="relationship_id" class="form-select"
-                                value="{{ $field->data($post) }}">
-                                <option value="" selected></option>
-                                @foreach ($posts as $cur_post)
-                                    <option value="{{ $cur_post->id }}"
-                                        {{ $cur_post->id == $field->data($post)->relationship_id ? 'selected' : '' }}>
-                                        {{ $cur_post->postType->name }} - {{ $cur_post->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                    @if ($field->type == 'Relationship')
 
-                        @elseif($field->type == 'Textarea')
-                            <textarea name="value" id="value" class="form-control" cols="30"
-                                rows="10">{{ $field->data($post) }}</textarea>
+                        <select name="content[{{ $field->name }}]" id="input{{ $field->name }}" class="form-select"
+                            value=@isset($post->content[$field->name]) {{ $post->content[$field->name] }} @endisset>
+                            <option value="" selected></option>
+                            @foreach ($posts as $cur_post)
+                                <option value="{{ $cur_post->id }}" @isset($post->content[$field->name])
+                                        {{ $cur_post->id == $post->content[$field->name] ? 'selected' : '' }}
+                                    @endisset
+                                    >
+                                    {{ $cur_post->postType->name }} - {{ $cur_post->name }}
+                                </option>
+                            @endforeach
+                        </select>
 
-                        @elseif($field->type == 'Text')
-                            <input type="text" class="form-control" name="value"
-                                value="{{ $field->data($post)->value }}">
+                    @elseif($field->type == 'Textarea')
+                        <textarea name="content[{{ $field->name }}]" id="input{{ $field->name }}" class="form-control"
+                            cols="30"
+                            rows="10">@isset($post->content[$field->name]) {{ $post->content[$field->name] }} @endisset</textarea>
+
+                    @elseif($field->type == 'Text')
+                        <input type="text" id="input{{ $field->name }}" class="form-control"
+                            name="content[{{ $field->name }}]" @isset($post->content[$field->name])
+                        value="{{ $post->content[$field->name] }}" @endisset>
+
+                    @else
+                        @isset($post->content[$field->name])
+                            {{ $post->content[$field->name] }}
+                        @endisset
+                    @endif
+
+                </div>
 
 
-                        @else
-                            <input type="text" class="form-control" name="value"
-                                value="{{ $field->data($post)->value }}">
-                        @endif
+            @endforeach
 
-                    </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-
-            @else
-                <form action="/datas" method="post" class="mb-3">
-                    @csrf
-                    <label for="name" class="form-label">{{ $field->name }}</label>
-                    <input type="text" class="visually-hidden" name="post_id" value="{{ $post->id }}">
-                    <input type="text" class="visually-hidden" name="field_id" value="{{ $field->id }}">
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </form>
-            @endif
-
-        @endforeach
+        </form>
 
 
 
@@ -144,5 +134,7 @@
         </div>
 
     </div>
+
+
 
 @endcomponent()

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+
 class Post extends Model
 {
     use HasFactory;
@@ -13,6 +15,7 @@ class Post extends Model
 
     protected $casts = [
         'content' => 'array',
+        // 'content' => AsArrayObject::class,
     ];
 
     public function postType()
@@ -23,21 +26,6 @@ class Post extends Model
     public function datas()
     {
         return $this->hasMany(Data::class);
-    }
-
-    public function fieldDatas()
-    {
-        return $this->hasMany(Data::class);
-    }
-
-    public function relationship_children_posts()
-    {
-        return $this->hasManyThrough(Post::class, Data::class, 'relationship_id', 'id', 'id', 'post_id');
-    }
-
-    public function relationship_children()
-    {
-        return $this->hasMany(Data::class, 'relationship_id');
     }
 
     public function children()
