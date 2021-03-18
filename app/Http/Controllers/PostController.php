@@ -43,6 +43,7 @@ class PostController extends Controller
         $validated = $request->validate([
             'post_type' => 'required',
             'name' => 'required',
+            'order' => 'integer',
         ]);
 
         $posttypeId = $request->query("posttypeId");
@@ -79,17 +80,22 @@ class PostController extends Controller
         ]);
         $post->update($validated);
 
+        // Update the datas
+        if ($request->has('datas')) {
 
-        if($request->has('content')){
+            foreach ($request->input('datas') as $key => $dataValue) {
 
-            $content = $post->content;
-            foreach ($request->input('content') as $key => $value) {
-                $content[$key] = $value;
+                $data = Data::find($key);
+
+                if($data->field->type == 'Relationship'){
+
+                    $data->update(['relationship_id' => $dataValue]);
+
+                }else{
+                    $data->update(['value' => $dataValue]);
+                }
             }
-
-            $post->content = $content;
-            $post->save();
-        
+     
         }
 
         return back();

@@ -26,13 +26,14 @@
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col py-3">Name</th>
-                    <th scope="col">Type</th>
+                    @empty($posttype)
+                        <th scope="col">Type</th>
+                    @endempty
                     @isset($posttype)
                         @foreach ($posttype->fields as $field)
                             <th scope="col">{{ $field->name }}</th>
                         @endforeach
                     @endisset
-                    <th scope="col">Parent</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -45,36 +46,38 @@
                             <a href="/posts/{{ $post->id }}/edit">{{ $post->id }}</a>
                         </th>
                         <td>
-                            @isset($post->content['Name'])
-                                <a href="/posts/{{ $post->id }}/edit">{{ $post->content['Name'] }}</a>
-                            @endisset
+                            <a href="/posts/{{ $post->id }}/edit">
+                                @if ($post->getDataForFieldName('Name'))
+                                    {{ $post->getDataForFieldName('Name')->value }}
+                                @endif
+                            </a>
                         </td>
-                        <td>{{ $post->postType->name }}</td>
+                        {{-- Type --}}
+                        {{-- Only shown if we are in the all post view with no predined posttype --}}
+                        @empty($posttype)
+                            <td>{{ $post->postType->name }}</td>
+                        @endempty
+
                         {{-- Custom fields --}}
+                        {{-- Only shown if we are watching a specific type of post --}}
                         @isset($posttype)
-                            @foreach ($posttype->fields as $field)
+                            @foreach ($post->datas as $data)
                                 <td>
-                                    @if ($field->type == 'Relationship')
-                                        @if ($field->data($post))
-                                            <a href="/posts/{{ $post->id }}/edit">
-                                                @if ($field->data($post)->relationship)
-                                                    {{ $field->data($post)->relationship->name }}
+                                    @if ($data->field->type == 'Relationship')
+                                        @isset($data->relationship)
+                                            <a href="/posts/{{ $data->relationship_id }}/edit">
+                                                @if ($data->relationship->getDataForFieldName('Name'))
+                                                    {{ $data->relationship->getDataForFieldName('Name')->value }}
                                                 @endif
                                             </a>
-                                        @endif
+                                        @endisset
                                     @else
-                                        @if ($field->data($post))
-                                            {{ $field->data($post)->value }}
-                                        @endif
+                                        {{ $data->value }}
                                     @endif
                                 </td>
                             @endforeach
+
                         @endisset
-                        <td>
-                            @isset($post->parent)
-                                {{ $post->parent->name }}
-                            @endisset
-                        </td>
                         {{-- Delete --}}
                         <td class="text-right px-5">
                             <form action="/posts/{{ $post->id }}" method="post" id="formDelete">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Data;
 use App\Models\PostType;
 use App\Models\Field;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class FieldController extends Controller
 
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'name' => 'required',
             'type' => 'required',
@@ -25,12 +27,17 @@ class FieldController extends Controller
 
         $postType = PostType::find($request->query('posttype'));
 
-        $postType->fields()->create(['name' => $validated['name'], 'type' => $validated['type']]);
+        $field = $postType->fields()->create($validated);
 
-        return back(); //redirect('posttypes');
+        // Create data for every post with this new field
+        foreach ($field->posttype->posts as $post) {
+            $post->datas()->create(['field_id' => $field->id, 'order' => $field->order]);
+        }
+
+        return back();
     }
 
-    
+
     public function update(Request $request, Field $field)
     {
         $validated = $request->validate([
@@ -41,7 +48,13 @@ class FieldController extends Controller
         ]);
 
         $field->update($validated);
-        
+
+        // Update the order to all datas
+        foreach ($field->datas as $data) {
+            $data->order = $field->order;
+            $data->save();
+        }
+
         return back();
     }
 

@@ -15,54 +15,53 @@
 
     <div class="container py-5">
 
-        {{-- Id --}}
-        <form>
-            <div class="row">
-                <div class="col-auto">
-                    <label for="inputId" class="col-form-label">Id</label>
-                </div>
-                <div class="col-auto">
-                    <input type="text" id="inputId" class="form-control" value="{{ $post->id }}" disabled>
-                </div>
-            </div>
-        </form>
-
         <form action="/posts/{{ $post->id }}" method="post" class="mb-3">
             @csrf
             @method('PUT')
 
-            {{-- Name --}}
-            <div class="mb-3">
-                <label for="inputName" class="col-form-label d-inline-flex">Name</label>
-                <input type="text" id="inputName" class="form-control" name="name" value="{{ $post->name }}">
-            </div>
-
-            {{-- Parent --}}
-            <div class="mb-3">
-                <label for="parent" class="col-form-label">Parent</label>
-                <select class="form-select" name="parent_id" id="parent_id">
-                    <option value="" selected></option>
-                    @foreach ($posts as $_post)
-                        <option value="{{ $_post->id }}"
-                            {{ $post->parent && $post->parent->id == $_post->id ? 'selected' : '' }}>
-                            {{ $_post->posttype->name }} - {{ $_post->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-
-        Fields
-        <form action="/posts/{{ $post->id }}" method="post" class="mb-3">
-            @csrf
-            @method('PUT')
-
-            @foreach ($post->posttype->fields as $field)
+            {{-- New custom --}}
+            @foreach ($post->datas as $data)
 
                 <div class="mb-3">
 
                     {{-- Print label --}}
+                    <label for="input{{ $data->field->name }}" class="form-label">{{ $data->field->name }}</label>
+
+                    @if ($data->field->type == 'Relationship')
+
+                        <select name="datas[{{ $data->id }}]"
+                            id="input{{ $data->field->name }}" class="form-select" value={{ $data->value }}>
+                            <option value="" selected></option>
+                            @foreach ($posts as $cur_post)
+                                <option value="{{ $cur_post->id }}"
+                                    {{ $cur_post->id == $data->relationship_id ? 'selected' : '' }}>
+                                    {{ $cur_post->postType->name }} - {{ $cur_post->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    @elseif($data->field->type == 'Textarea')
+                        <textarea name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
+                            class="form-control" cols="30" rows="10">{{ $data->value }} </textarea>
+
+                    @elseif($data->field->type == 'Text')
+                        <input type="text" id="input{{ $data->field->name }}" class="form-control"
+                            name="datas[{{ $data->id }}]" value="{{ $data->value }}">
+
+                    @else
+                        {{ $data->value }}
+                    @endif
+
+                </div>
+
+
+            @endforeach
+
+            {{-- Customs --}}
+            {{-- @foreach ($post->posttype->fields as $field)
+
+                <div class="mb-3">
+
                     <label for="input{{ $field->name }}" class="form-label">{{ $field->name }}</label>
 
                     @if ($field->type == 'Relationship')
@@ -99,7 +98,8 @@
                 </div>
 
 
-            @endforeach
+            @endforeach --}}
+
 
             <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -108,11 +108,12 @@
 
 
         {{-- Childrens --}}
-        @if (!$post->children->isEmpty())
-            <div>
+
+        @if ($post->children2())
+            <div class="mb-3">
                 <label for="parent" class="col-form-label">Children</label>
                 <ul>
-                    @foreach ($post->children as $child)
+                    @foreach ($post->children2() as $child)
                         <li>
                             <a href="/posts/{{ $child->id }}">
                                 {{ $child->posttype->name }} - {{ $child->name }}
@@ -124,13 +125,23 @@
         @endif
 
 
-        <div class="text-right">
-            <form action="/posts/{{ $post->id }}" method="post" id="formDelete">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn-link link-danger text-decoration-none" type="submit"
-                    form="formDelete">Delete</button>
-            </form>
+        {{-- Id and Delete --}}
+        <div class="flex justify-between mt-5">
+
+            <div>
+                <span class="text-gray-500">
+                    Id {{ $post->id }}
+                </span>
+            </div>
+
+            <div class="text-right">
+                <form action="/posts/{{ $post->id }}" method="post" id="formDelete">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-link link-danger text-decoration-none" type="submit"
+                        form="formDelete">Delete</button>
+                </form>
+            </div>
         </div>
 
     </div>

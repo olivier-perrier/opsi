@@ -21,19 +21,18 @@ class DatabaseSeeder extends Seeder
         $user = User::factory(1)->create(['email' => 'olivier.perrier.j@gmail.com']);
         User::factory(1)->create(['email' => 'client@gmail.com']);
 
-        // \App\Models\User::factory(10)->create();
         $page = PostType::factory()->create(['name' => 'Page']);
         $post = PostType::factory()->create(['name' => 'Post']);
         $client = PostType::factory()->create(['name' => 'Client']);
         $contrat = PostType::factory()->create(['name' => 'Contrat']);
 
         // Fields
-        Field::factory()->for($contrat)->create(['name' => 'Client', 'type' => 'Relationship']);
-        Field::factory()->for($contrat)->create(['name' => 'Date', 'type' => 'Date']);
+        // Field::factory()->for($contrat)->create(['name' => 'Client', 'type' => 'Relationship']);
+        // Field::factory()->for($contrat)->create(['name' => 'Date', 'type' => 'Date']);
 
         // Posts
         // Post::factory()->for($page)->create(['name' => 'Page 1']);
-        Post::factory()->create(['name' => 'Page 1']);
+        // Post::factory()->create(['name' => 'Page 1']);
         // Post::factory()->for($post)->create(['name' => 'Post 1']);
         // Post::factory()->for($client)->create(['name' => 'Client 1']);
         // Post::factory()->for($contrat)->create(['name' => 'Contrat 1']);
