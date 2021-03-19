@@ -6,7 +6,6 @@ use App\Models\Post;
 use App\Models\Data;
 use App\Models\PostType;
 use App\Models\User;
-use ArrayObject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -112,8 +111,9 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
+        
         $post->datas()->delete();
-
+        
         $post->delete();
 
         return back();

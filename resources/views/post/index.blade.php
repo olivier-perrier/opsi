@@ -64,6 +64,7 @@
                             @foreach ($post->datas as $data)
                                 <td>
                                     @if ($data->field->type == 'Relationship')
+                                        r*
                                         @isset($data->relationship)
                                             <a href="/posts/{{ $data->relationship_id }}/edit">
                                                 @if ($data->relationship->getDataForFieldName('Name'))
@@ -83,8 +84,7 @@
                             <form action="/posts/{{ $post->id }}" method="post" id="formDelete">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-link link-danger text-decoration-none" type="submit"
-                                    form="formDelete">Delete</button>
+                                <button class="btn btn-link link-danger text-decoration-none" type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>
