@@ -3,7 +3,7 @@
 
 
     <x-slot name="header">
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ $post->posttype->name }} - {{ $post->name }}
             </h2>
@@ -22,15 +22,15 @@
             {{-- New custom --}}
             @foreach ($post->datas as $data)
 
-                <div class="mb-3">
+                <div class="mb-6">
 
                     {{-- Print label --}}
-                    <label for="input{{ $data->field->name }}" class="form-label">{{ $data->field->name }}</label>
+                    <label for="input{{ $data->field->name }}" class="block mb-1">{{ $data->field->name }}</label>
 
                     @if ($data->field->type == 'Relationship')
 
                         <select name="datas[{{ $data->id }}]"
-                            id="input{{ $data->field->name }}" class="form-select" value={{ $data->value }}>
+                            id="input{{ $data->field->name }}" class="block w-full rounded" value={{ $data->value }}>
                             <option value="" selected></option>
                             @foreach ($posts as $cur_post)
                                 <option value="{{ $cur_post->id }}"
@@ -45,7 +45,7 @@
                             class="form-control" cols="30" rows="10">{{ $data->value }} </textarea>
 
                     @elseif($data->field->type == 'Text')
-                        <input type="text" id="input{{ $data->field->name }}" class="form-control"
+                        <input type="text" id="input{{ $data->field->name }}" class="block w-full border-gray-300 rounded"
                             name="datas[{{ $data->id }}]" value="{{ $data->value }}">
 
                     @else
@@ -57,51 +57,8 @@
 
             @endforeach
 
-            {{-- Customs --}}
-            {{-- @foreach ($post->posttype->fields as $field)
 
-                <div class="mb-3">
-
-                    <label for="input{{ $field->name }}" class="form-label">{{ $field->name }}</label>
-
-                    @if ($field->type == 'Relationship')
-
-                        <select name="content[{{ $field->name }}]" id="input{{ $field->name }}" class="form-select"
-                            value=@isset($post->content[$field->name]) {{ $post->content[$field->name] }} @endisset>
-                            <option value="" selected></option>
-                            @foreach ($posts as $cur_post)
-                                <option value="{{ $cur_post->id }}" @isset($post->content[$field->name])
-                                        {{ $cur_post->id == $post->content[$field->name] ? 'selected' : '' }}
-                                    @endisset
-                                    >
-                                    {{ $cur_post->postType->name }} - {{ $cur_post->name }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                    @elseif($field->type == 'Textarea')
-                        <textarea name="content[{{ $field->name }}]" id="input{{ $field->name }}" class="form-control"
-                            cols="30"
-                            rows="10">@isset($post->content[$field->name]) {{ $post->content[$field->name] }} @endisset</textarea>
-
-                    @elseif($field->type == 'Text')
-                        <input type="text" id="input{{ $field->name }}" class="form-control"
-                            name="content[{{ $field->name }}]" @isset($post->content[$field->name])
-                        value="{{ $post->content[$field->name] }}" @endisset>
-
-                    @else
-                        @isset($post->content[$field->name])
-                            {{ $post->content[$field->name] }}
-                        @endisset
-                    @endif
-
-                </div>
-
-
-            @endforeach --}}
-
-
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="py-2 px-4 bg-green-500 text-white font-semibold shadow-md rounded-lg">Submit</button>
 
         </form>
 
