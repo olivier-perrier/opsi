@@ -9,7 +9,7 @@ class Data extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['value', 'value_json', 'relationship_id'];
+    protected $fillable = ['post_id', 'field_id', 'value', 'value_json', 'relationship_id', 'order'];
 
     protected $casts = [
         'value_json' => 'array',

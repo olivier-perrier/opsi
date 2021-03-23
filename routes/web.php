@@ -8,6 +8,7 @@ use App\Http\Controllers\PostTypeController;
 use App\Http\Controllers\PostTypePostController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\AuthorizationController;
+use App\Models\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/posts/{post}/edit', [PostController::class, 'edit']);
     Route::put('/posts/{post}', [PostController::class, 'update']);
     Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+    
 
     Route::get('/posttypes', [PostTypeController::class, 'index'])->name('posttypes');
     Route::get('/posttypes/{post_type}', [PostTypeController::class, 'show']);

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\PostType;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('menuSidebar', PostType::all());
+
+        if (Schema::hasTable('post_types')) {
+            View::share('menuSidebar', PostType::all());
+        }
     }
 }

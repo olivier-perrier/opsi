@@ -21,6 +21,7 @@ class CreateDataTable extends Migration
             $table->string("value")->nullable();
             $table->json("value_json")->nullable();
             $table->foreignId("relationship_id")->nullable()->constrained('posts');
+            $table->integer("order")->nullable();
             $table->timestamps();
         });
     }

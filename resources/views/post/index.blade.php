@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-between">
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 @isset($posttype)
@@ -20,76 +20,91 @@
 
     <div class="container py-5">
 
-        <table class="table rounded shadow bg-light">
 
-            <thead class="text-secondary text-uppercase">
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col py-3">Name</th>
-                    <th scope="col">Type</th>
-                    @isset($posttype)
-                        @foreach ($posttype->fields as $field)
-                            <th scope="col">{{ $field->name }}</th>
-                        @endforeach
-                    @endisset
-                    <th scope="col">Parent</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody class="bg-white">
+        <div class="shadow overflow-hidden rounded-lg">
 
-                @foreach ($posts as $post)
+            <table class="min-w-full divide-y divide-gray-200">
 
+                <thead class="uppercase text-gray-500 bg-gray-50">
                     <tr>
-                        <th scope="row">
-                            <a href="/posts/{{ $post->id }}/edit">{{ $post->id }}</a>
-                        </th>
-                        <td>
-                            @isset($post->content['Name'])
-                                <a href="/posts/{{ $post->id }}/edit">{{ $post->content['Name'] }}</a>
-                            @endisset
-                        </td>
-                        <td>{{ $post->postType->name }}</td>
-                        {{-- Custom fields --}}
+                        <th scope="col" class="px-6 py-3 text-left">Id</th>
+                        @empty($posttype)
+                            <th scope="col" class="px-6 py-3 text-left">Type</th>
+                        @endempty
                         @isset($posttype)
                             @foreach ($posttype->fields as $field)
-                                <td>
-                                    @if ($field->type == 'Relationship')
-                                        @if ($field->data($post))
-                                            <a href="/posts/{{ $post->id }}/edit">
-                                                @if ($field->data($post)->relationship)
-                                                    {{ $field->data($post)->relationship->name }}
-                                                @endif
-                                            </a>
-                                        @endif
-                                    @else
-                                        @if ($field->data($post))
-                                            {{ $field->data($post)->value }}
-                                        @endif
-                                    @endif
-                                </td>
+                                <th scope="col" class="px-6 py-3 text-left">{{ $field->name }}</th>
                             @endforeach
                         @endisset
-                        <td>
-                            @isset($post->parent)
-                                {{ $post->parent->name }}
-                            @endisset
-                        </td>
-                        {{-- Delete --}}
-                        <td class="text-right px-5">
-                            <form action="/posts/{{ $post->id }}" method="post" id="formDelete">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-link link-danger text-decoration-none" type="submit"
-                                    form="formDelete">Delete</button>
-                            </form>
-                        </td>
+                        <th scope="col" class="px-6 py-3 text-left"></th> {{-- Delete --}}
+                        <th scope="col" class="px-6 py-3 text-left"></th> {{-- Show --}}
+
                     </tr>
+                </thead>
+                <tbody class="bg-white divide-y">
 
-                @endforeach
+                    @foreach ($posts as $post)
 
-            </tbody>
-        </table>
+                        <tr class="hover:bg-gray-50">
+                            <td scope="row" class="px-6 py-4">
+                                <a href="/posts/{{ $post->id }}/edit" class="block text-blue-500">{{ $post->id }}</a>
+                            </td>
+
+                            {{-- Type --}}
+                            {{-- Only shown if we are in the all post view with no predined posttype --}}
+                            @empty($posttype)
+                                <td class="px-6 py-4">{{ $post->postType->name }}</td>
+                            @endempty
+
+                            {{-- Custom fields --}}
+                            {{-- Only shown if we are watching a specific type of post --}}
+                            @isset($posttype)
+                                @foreach ($post->datas as $key => $data)
+                                    <td class="px-6 py-4">
+                                        @if ($data->field->type == 'Relationship')
+                                            @isset($data->relationship)
+                                                <a href="/posts/{{ $data->relationship_id }}/edit">
+                                                    @if ($data->relationship->getDataForFieldName('Name'))
+                                                        {{ $data->relationship->getDataForFieldName('Name')->value }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </a>
+                                            @endisset
+                                        @else
+                                            @if ($key == 0)
+                                                <a href="/posts/{{ $post->id }}/edit" class="text-blue-500">
+                                                    {{ $data->value }}
+                                                </a>
+                                            @else
+                                                {{ $data->value }}
+                                            @endif
+                                        @endif
+                                    </td>
+                                @endforeach
+
+                            @endisset
+                            {{-- Delete --}}
+                            <td class="text-right px-2 py-4">
+                                <form action="/posts/{{ $post->id }}" method="post" id="formDelete">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn-link text-red-500 text-decoration-none"
+                                        type="submit">Delete</button>
+                                </form>
+                            </td>
+                            <td class="text-right pr-5 py-4">
+                                <a href="/posts/{{ $post->id }}/edit"
+                                    class="font-bold text-indigo-600 hover:text-indigo-900">Edit</a>
+                            </td>
+                        </tr>
+
+                    @endforeach
+
+                </tbody>
+            </table>
+        
+        </div>
 
     </div>
 

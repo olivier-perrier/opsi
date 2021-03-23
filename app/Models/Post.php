@@ -25,12 +25,21 @@ class Post extends Model
 
     public function datas()
     {
-        return $this->hasMany(Data::class);
+        return $this->hasMany(Data::class)->orderBy('order');
     }
 
     public function children()
     {
         return $this->hasMany(Post::class, 'parent_id');
+    }
+
+    // todo
+    public function children2()
+    {
+        if (isset($this->content['Parent']))
+            return Post::all()->where('id', $this->content['Parent']);
+        else
+            return;
     }
 
     public function parent()
@@ -41,5 +50,19 @@ class Post extends Model
     public function user()
     {
         return $this->belongsTo(Post::class);
+    }
+
+    public function find($postId)
+    {
+        return Post::all()->where('id', $postId)->first();
+    }
+
+    public function getDataForFieldName($fieldName)
+    {
+        $field = $this->posttype->fields->where('name', $fieldName)->first();
+
+        if ($field)
+            return $this->datas->where('field_id', $field->id)->first();
+        else return;
     }
 }

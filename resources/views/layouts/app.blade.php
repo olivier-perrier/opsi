@@ -12,15 +12,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
     <!-- Styles -->
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"  integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous"> --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
     </script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
 
 </head>
 
@@ -37,16 +36,17 @@
 
         <!-- Page Content -->
 
-        <div class="container-fluid">
-            <div class="row">
+        <div class="container">
 
-                <div class="col-md-2">
+            <div class="grid grid-cols-4 gap-4">
 
-                    <ul class="nav flex-column py-3">
+                <div class="col-span-1">
+
+                    <ul class="px-6 py-3">
 
                         @foreach ($menuSidebar as $menuItem)
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page"
+                            <li class="rounded hover:bg-gray-200 py-2">
+                                <a class="nav-link active px-2" aria-current="page"
                                     href="/posttypes/{{ $menuItem->id }}/posts">
                                     {{ $menuItem->name }}
                                 </a>
@@ -57,7 +57,7 @@
 
                 </div>
 
-                <div class="col-md-10">
+                <div class="col-span-3 px-4">
 
                     <main>
                         {{ $slot }}
