@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostTypeController;
 use App\Http\Controllers\PostTypePostController;
 use App\Http\Controllers\FieldController;
+use App\Http\Controllers\AuthorizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/fields', [FieldController::class, 'store']);
     Route::put('/fields/{field}', [FieldController::class, 'update']);
     Route::delete('/fields/{field}', [FieldController::class, 'destroy']);
+
+    Route::get('/authorizations', [AuthorizationController::class, 'index'])->name('authorizations');
+    Route::get('/authorizations/create', [AuthorizationController::class, 'create']);
+    Route::post('/authorizations', [AuthorizationController::class, 'store']);
+
 });
 
 

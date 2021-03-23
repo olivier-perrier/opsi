@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('posttypes')" :active="request()->routeIs('postposttypess')">
                         {{ __('Post types') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('authorizations')" :active="request()->routeIs('authorizations')">
+                        {{ __('Authorizations') }}
+                    </x-nav-link>
                 </div>
             </div>
 
