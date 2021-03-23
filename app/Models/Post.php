@@ -11,7 +11,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['post_type_id', 'name', 'content', 'parent_id', 'user_id'];
+    protected $fillable = ['posttype_id', 'name', 'content', 'parent_id', 'user_id'];
 
     protected $casts = [
         'content' => 'array',

@@ -49,7 +49,7 @@ class PostController extends Controller
 
         // Crée le nouveau post sur le PostType
         $post = Post::create([
-            'post_type_id' => $validated['post_type'],
+            'posttype_id' => $validated['post_type'],
             'name' => $validated['name'],
             'user_id' => Auth::id(),
         ]);

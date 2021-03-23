@@ -1,8 +1,7 @@
 @component('layouts.app')
 
     <x-slot name="header">
-        <div class="d-flex justify-content-between">
-
+        <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Authorizations') }}
             </h2>
@@ -16,11 +15,14 @@
             @csrf
 
             <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" name="name" class="form-control" value="{{ @old('name') }}">
+                <label for="name" class="block">Name</label>
+                <input type="text" name="name" class="mt-1 block w-full rounded-lg" value="{{ @old('name') }}">
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="block text-right">
+                <button type="submit"
+                    class="py-2 px-4 bg-green-500 text-white font-semibold shadow-md rounded-lg">Create</button>
+            </div>
         </form>
 
     </div>

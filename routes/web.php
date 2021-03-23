@@ -61,7 +61,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/authorizations', [AuthorizationController::class, 'index'])->name('authorizations');
     Route::get('/authorizations/create', [AuthorizationController::class, 'create']);
+    Route::get('/authorizations/{authorization}/edit', [AuthorizationController::class, 'edit']);
     Route::post('/authorizations', [AuthorizationController::class, 'store']);
+    Route::put('/authorizations/{authorization}', [AuthorizationController::class, 'update']);
 
 });
 

@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        if (Schema::hasTable('post_types')) {
+        if (Schema::hasTable('posttypes')) {
             View::share('menuSidebar', PostType::all());
         }
     }

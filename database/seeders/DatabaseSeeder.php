@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Authorization;
 use App\Models\Field;
 use App\Models\Post;
 use App\Models\PostType;
@@ -25,6 +26,8 @@ class DatabaseSeeder extends Seeder
         $post = PostType::factory()->create(['name' => 'Post']);
         $client = PostType::factory()->create(['name' => 'Client']);
         $contrat = PostType::factory()->create(['name' => 'Contrat']);
+
+        Authorization::factory()->create(['name' => 'Auth1']);
 
         // Fields
         // Field::factory()->for($contrat)->create(['name' => 'Client', 'type' => 'Relationship']);

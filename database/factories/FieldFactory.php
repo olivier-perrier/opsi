@@ -23,7 +23,7 @@ class FieldFactory extends Factory
     public function definition()
     {
         return [
-            'post_type_id' => PostType::factory()->make(),
+            'posttype_id' => PostType::factory()->make(),
             'name' => $this->faker->name,
             'type' => 'Text',
         ];

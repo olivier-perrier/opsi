@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-between">
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Authorizations') }}
@@ -11,11 +11,11 @@
     </x-slot>
 
 
-    <div class="container">
+    <div class="container py-6">
 
         @foreach ($authorizations as $authorization)
 
-            {{ $authorization }}
+            <a href="/authorizations/{{ $authorization->id }}/edit">{{ $authorization->name }}</a>
 
         @endforeach
     </div>
