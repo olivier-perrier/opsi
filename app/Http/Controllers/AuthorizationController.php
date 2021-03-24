@@ -52,18 +52,15 @@ class AuthorizationController extends Controller
             'name' => 'required',
         ]);
         // dd($request);
-        // dd($authorization->posttypes());
+        // dd(collect($request->input('posttypes'))->keys());
 
         if ($request->has('posttypes')) {
 
-            foreach ($request->input('posttypes') as $posttypeId => $posttype) {
-                // dd($authorization->posttypes());
-
-                $authorization->posttypes()->attach($posttypeId);
-                dd($authorization->posttypes());
-
-                // dd($posttypeId);
-            }
+            // Create a collection of the request result
+            // then collect only the keys
+            // use the keys as sync attachement for the Model
+            $authorization->posttypes()->sync(collect($request->input('posttypes'))->keys());
+       
         }
 
         return back();

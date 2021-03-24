@@ -35,6 +35,7 @@
                     <div class="my-2 p-4 max-w-xs bg-white rounded-xl shadow-md">
                         <label class="flex items-center space-x-3">
                             <input type="checkbox" name="posttypes[{{ $posttype->id }}]" value="1"
+                                {{ $authorization->posttypes->contains($posttype->id) ? 'checked' : '' }}
                                 class="form-tick appearance-none h-6 w-6 border border-gray-300 rounded-lg">
                             <span class="">{{ $posttype->name }}</span>
                         </label>

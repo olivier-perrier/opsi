@@ -16,7 +16,7 @@ class CreateAuthorizationPosttypeTable extends Migration
         Schema::create('authorization_posttype', function (Blueprint $table) {
             $table->id();
             $table->foreignId('authorization_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('posttype_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
