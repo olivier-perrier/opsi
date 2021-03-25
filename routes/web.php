@@ -8,6 +8,7 @@ use App\Http\Controllers\PostTypeController;
 use App\Http\Controllers\PostTypePostController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\AuthorizationController;
+use App\Http\Controllers\UserController;
 use App\Models\Post;
 
 /*
@@ -64,6 +65,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/authorizations/{authorization}/edit', [AuthorizationController::class, 'edit']);
     Route::post('/authorizations', [AuthorizationController::class, 'store']);
     Route::put('/authorizations/{authorization}', [AuthorizationController::class, 'update']);
+
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/users/{user}/edit', [UserController::class, 'edit']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::put('/users/{user}', [UserController::class, 'update']);
+
+
 
 });
 

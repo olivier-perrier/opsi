@@ -4,50 +4,49 @@
         <div class="flex justify-between">
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Authorizations') }}
+                {{ __('User') }}
             </h2>
-            <a href="/authorizations/create">Create</a>
+            <a href="/user/create">Create</a>
         </div>
     </x-slot>
 
     <div class="container py-6">
 
-        @foreach ($authorization->posttypes() as $pt)
-            {{ $pt }}
-        @endforeach
+        <div>
 
-        {{-- {{ $authorization->posttypes() }} --}}
+            Authorizations de l'utilisateurs
 
-        <form action="/authorizations/{{ $authorization->id }}" method="post" class="mb-3">
+            @foreach ($user->authorizations() as $auth)
+                {{ $auth }}
+            @endforeach
+
+        </div>
+
+
+        <form action="/users/{{ $user->id }}" method="post" class="mb-3">
             @csrf
             @method('PUT')
 
             <div class="mb-3">
                 <label for="name" class="block">Name</label>
-                <input type="text" name="name" class="mt-1 block w-full rounded-lg" value="{{ $authorization->name }}">
+                <input type="text" name="name" class="mt-1 block w-full rounded-lg" value="{{ $user->name }}">
             </div>
 
             <div class="mb-3">
-                <label for="posttypes" class="block">Post types</label>
+                <label for="posttypes" class="block">Authorizations</label>
 
-                @foreach ($posttypes as $posttype)
+                @foreach ($authorizations as $authorization)
 
                     <div class="my-2 p-4 max-w-xs bg-white rounded-xl shadow-md">
                         <label class="flex items-center space-x-3">
-                            <input type="checkbox" name="posttypes[{{ $posttype->id }}]" 
-                            {{-- value="1" --}}
-                                {{ $authorization->posttypes->contains($posttype->id) ? 'checked' : '' }}
+                            <input type="checkbox" name="authorizations[{{ $authorization->id }}]"
+                                {{ $authorization->users->contains($user->id) ? 'checked' : '' }}
                                 class="form-tick appearance-none h-6 w-6 border border-gray-300 rounded-lg">
-                            <span class="">{{ $posttype->name }}</span>
+                            <span class="">{{ $authorization->name }}</span>
                         </label>
                     </div>
                 @endforeach
 
-            </div>
-
-            <div class="mb-3">
-                <label for="users" class="block">Name</label>
-                <input type="text" name="users" class="mt-1 block w-full rounded-lg" value="{{ @old('name') }}">
             </div>
 
             <button type="submit" class="py-2 px-4 bg-green-500 text-white font-semibold shadow-md rounded-lg">Save</button>
@@ -61,12 +60,12 @@
 
             <div>
                 <span class="text-gray-500">
-                    Id {{ $authorization->id }}
+                    Id {{ $user->id }}
                 </span>
             </div>
 
             <div class="text-right">
-                <form action="/authorizations/{{ $authorization->id }}" method="post" id="formDelete">
+                <form action="/user/{{ $user->id }}" method="post" id="formDelete">
                     @csrf
                     @method('DELETE')
                     <button class="text-red-500" type="submit" form="formDelete">Delete</button>

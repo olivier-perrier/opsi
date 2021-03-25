@@ -54,6 +54,7 @@ class AuthorizationController extends Controller
         // dd($request);
         // dd(collect($request->input('posttypes'))->keys());
 
+        // If no data sent then detach all
         if ($request->has('posttypes')) {
 
             // Create a collection of the request result
@@ -61,6 +62,8 @@ class AuthorizationController extends Controller
             // use the keys as sync attachement for the Model
             $authorization->posttypes()->sync(collect($request->input('posttypes'))->keys());
        
+        }else{
+            $authorization->posttypes()->detach();
         }
 
         return back();

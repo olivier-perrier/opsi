@@ -18,11 +18,14 @@
                     <x-nav-link :href="route('posts')" :active="request()->routeIs('posts')">
                         {{ __('Posts') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('posttypes')" :active="request()->routeIs('postposttypess')">
+                    <x-nav-link :href="route('posttypes')" :active="request()->routeIs('posttypes')">
                         {{ __('Post types') }}
                     </x-nav-link>
                     <x-nav-link :href="route('authorizations')" :active="request()->routeIs('authorizations')">
                         {{ __('Authorizations') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
+                        {{ __('Users') }}
                     </x-nav-link>
                 </div>
             </div>
