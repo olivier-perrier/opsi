@@ -44,7 +44,7 @@
 
                     <ul class="px-6 py-3">
 
-                        {{ $menuSidebar2 ?? ''}}
+                        {{-- {{ $menuSidebar2 }} --}}
                         {{-- @foreach ($menuSidebar2 as $menuItem)
                             <li class="rounded hover:bg-gray-200 py-2">
                                 <a class="nav-link active px-2" aria-current="page"

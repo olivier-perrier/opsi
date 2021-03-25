@@ -10,11 +10,12 @@
         </div>
     </x-slot>
 
-    <x-slot name="menuSidebar2">
+    {{-- <x-slot name="menuSidebar2">
         <x-sidebar>
             {{ $menuSidebar2 }}
         </x-sidebar>
-    </x-slot>
+    </x-slot> --}}
+
 
 
     <div class="container py-6">
@@ -25,7 +26,6 @@
 
         @endforeach
 
-        {{ $menuSidebar2 }}
     </div>
 
 </x-app-layout>

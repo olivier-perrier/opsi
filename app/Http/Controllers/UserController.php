@@ -18,17 +18,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $menuSidebar = Auth::user()->authorizations->reduce(function ($carry, $item) {
-            return $carry->union($item->posttypes);
-        }, collect([]));
-
-        return view(
-            'user.index',
-            [
-                'users' => User::all(),
-                'menuSidebar2' => $menuSidebar
-            ]
-        );
+        return view('user.index', ['users' => User::all()]);
     }
 
     public function edit(User $user)
