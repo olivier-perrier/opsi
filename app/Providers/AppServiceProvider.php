@@ -31,15 +31,15 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.app', function ($view) {
             $menuSidebar = Auth::user()->authorizations->reduce(function ($carry, $item) {
-                return $carry->union($item->posttypes);
+                // echo $item->posttypes . '</br>';
+                // echo 'carry = ' . $carry . '</br>';
+                // dd($carry->concat($carry, $item->posttypes));
+                return $carry->concat($item->posttypes);
             }, collect([]));
 
-            $view->with('menuSidebar', $menuSidebar);
+            // dd($menuSidebar);
+
+            $view->with('menuSidebar', $menuSidebar->unique('name'));
         });
-
-
-        // if (Schema::hasTable('posttypes')) {
-        //     View::share('menuSidebar', PostType::all());
-        // }
     }
 }

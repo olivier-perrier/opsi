@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -50,4 +51,17 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Authorization::class);
     }
+
+    public function authorized_posttypes()
+    {
+        $menuSidebar = $this->authorizations->reduce(function ($carry, $item) {
+            // echo $item->posttypes . '</br>';
+            // echo 'carry = ' . $carry . '</br>';
+            // dd($carry->concat($carry, $item->posttypes));
+            return $carry->concat($item->posttypes);
+        }, collect([]));
+
+        return $menuSidebar->unique('name');
+    }
+
 }

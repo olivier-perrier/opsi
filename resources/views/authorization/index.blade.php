@@ -15,7 +15,9 @@
 
         @foreach ($authorizations as $authorization)
 
-            <a href="/authorizations/{{ $authorization->id }}/edit">{{ $authorization->name }}</a>
+            <a href="/authorizations/{{ $authorization->id }}/edit" class="text-blue-500 underline">
+                {{ $authorization->name }}
+            </a> <br>
 
         @endforeach
     </div>

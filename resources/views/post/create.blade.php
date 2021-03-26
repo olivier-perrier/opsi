@@ -20,7 +20,7 @@
             <div class="mb-3">
                 <label for="posttype" class="block font-medium">Post type</label>
 
-                <select name="post_type" id="posttype" class="mt-1 block w-full rounded-lg">
+                <select name="posttype" id="posttype" class="mt-1 block w-full rounded-lg">
                     @foreach ($posttypes as $posttype)
                         <option value="{{ $posttype->id }}" {{ $posttype->id == $posttypeId ? 'selected' : '' }}>
                             {{ $posttype->name }}
@@ -39,6 +39,9 @@
                 @enderror
             </div>
 
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
 
             <button type="submit"
                 class="py-2 px-4 bg-green-500 text-white font-semibold shadow-md rounded-lg">Submit</button>

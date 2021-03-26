@@ -40,24 +40,23 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'post_type' => 'required',
+            'posttype' => 'required',
             'name' => 'required',
             'order' => 'integer',
         ]);
 
-        $posttypeId = $request->query("posttypeId");
-
         // Crée le nouveau post sur le PostType
         $post = Post::create([
-            'posttype_id' => $validated['post_type'],
+            'posttype_id' => $validated['posttype'],
             'name' => $validated['name'],
             'user_id' => Auth::id(),
         ]);
 
 
         // Crée les nouvelles données sur le post grâce aux Fields
-        $fields = PostType::find($validated['post_type'])->fields;
+        $fields = PostType::find($validated['posttype'])->fields;
 
+        // dd($fields);
         foreach ($fields as $key => $field) {
             $data = new Data();
             $data->post_id = $post->id;
@@ -66,11 +65,13 @@ class PostController extends Controller
             $data->save();
         }
 
-        return redirect('posttypes/' . $posttypeId . '/posts');
+        return redirect('posts/' . $post->id . '/edit');
     }
 
     public function update(Request $request, Post $post)
     {
+
+
 
         $validated = $request->validate([
             'name' => '',
@@ -86,15 +87,13 @@ class PostController extends Controller
 
                 $data = Data::find($key);
 
-                if($data->field->type == 'Relationship'){
+                if ($data->field->type == 'Relationship') {
 
                     $data->update(['relationship_id' => $dataValue]);
-
-                }else{
+                } else {
                     $data->update(['value' => $dataValue]);
                 }
             }
-     
         }
 
         return back();
@@ -102,7 +101,11 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        if (auth::id() == $post->user_id) {
+
+        // Authorizations
+        $isAuth = Auth::user()->authorized_posttypes()->contains('name', $post->postType->name);
+
+        if ($isAuth) {
             return view('post.edit', ['post' => $post, 'posts' => Post::all()]);
         } else {
             abort(403);
@@ -111,9 +114,9 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        
+
         $post->datas()->delete();
-        
+
         $post->delete();
 
         return back();

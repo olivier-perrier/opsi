@@ -16,12 +16,12 @@ class PostType extends Model
 
     public function fields()
     {
-        return $this->hasMany(Field::class)->orderBy('order');
+        return $this->hasMany(Field::class, 'posttype_id')->orderBy('order');
     }
 
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class, 'posttype_id');
     }
     
 }

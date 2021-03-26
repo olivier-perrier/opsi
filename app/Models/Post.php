@@ -20,7 +20,7 @@ class Post extends Model
 
     public function postType()
     {
-        return $this->belongsTo(PostType::class);
+        return $this->belongsTo(PostType::class, 'posttype_id');
     }
 
     public function datas()
