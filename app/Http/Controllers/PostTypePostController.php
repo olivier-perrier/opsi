@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PostTypePostController extends Controller
 {
-    public function index(PostType $postType)
+    public function index(Request $request, PostType $postType)
     {
 
-        $isAuth = Auth::user()->authorized_posttypes()->contains('name', $postType->name);
+        $isAuth = $request->user()->authorized_posttypes()->contains('name', $postType->name);
 
         if ($isAuth) {
             return view('post.index', ['posts' => $postType->posts, 'posttype' => $postType]);

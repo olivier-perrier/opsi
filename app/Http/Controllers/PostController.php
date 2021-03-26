@@ -99,11 +99,11 @@ class PostController extends Controller
         return back();
     }
 
-    public function edit(Post $post)
+    public function edit(Request $request, Post $post)
     {
 
         // Authorizations
-        $isAuth = Auth::user()->authorized_posttypes()->contains('name', $post->postType->name);
+        $isAuth = $request->user()->authorized_posttypes()->contains('name', $post->postType->name);
 
         if ($isAuth) {
             return view('post.edit', ['post' => $post, 'posts' => Post::all()]);
