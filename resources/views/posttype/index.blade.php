@@ -30,17 +30,17 @@
                         <tr>
 
                             <td scope="row" class="py-4 px-6">
-                                <a href="/posttypes/{{ $posttype->id }}">{{ $posttype->id }}</a>
+                                <a href="/posttypes/{{ $posttype->id }}/edit">{{ $posttype->id }}</a>
                             </td>
                             <td class="py-4 px-6">
-                                <a href="/posttypes/{{ $posttype->id }}" class="text-blue-500">{{ $posttype->name }}</a>
+                                <a href="/posttypes/{{ $posttype->id }}/edit" class="text-blue-500">{{ $posttype->name }}</a>
                             </td>
                             <td class="py-4 px-6">
-                                <form action="/posttypes/{{ $posttype->id }}/edit" method="post" id="formDelete"
+                                <form action="/posttypes/{{ $posttype->id }}" method="post" id="formDelete"
                                     class="text-right">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="text-red-500" type="submit" form="formDelete">Delete</button>
+                                    <button class="text-red-500" type="submit">Delete</button>
                                 </form>
                             </td>
 
@@ -49,18 +49,25 @@
                 </tbody>
             </table>
 
+
         </div>
 
+        @if (session('message'))
+            <div class="p-5 bg-yellow-200 text-yellow-800 rounded-lg">
+                {{ session('message') }}
+            </div>
+        @endif
 
 
-        <form action="/posttypes" method="post">
+        <form action="/posttypes" method="post" class="mt-3">
             @csrf
             <div class="mb-3">
                 <label for="name" class="block mb-1">Create new</label>
                 <input type="text" class="block w-full rounded" name="name" placeholder="Name" value="{{ @old('name') }}">
             </div>
             <div class="block text-right">
-                <button type="submit" class="py-2 px-4 shadow-sm text-white font-medium bg-indigo-500 rounded-lg">Create</button>
+                <button type="submit"
+                    class="py-2 px-4 shadow-sm text-white font-medium bg-indigo-500 rounded-lg">Create</button>
             </div>
         </form>
     </div>

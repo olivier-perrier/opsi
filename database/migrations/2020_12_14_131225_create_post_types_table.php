@@ -16,6 +16,7 @@ class CreatePostTypesTable extends Migration
         Schema::create('posttypes', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->boolean("hidden");
             $table->timestamps();
         });
     }

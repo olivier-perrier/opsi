@@ -49,9 +49,11 @@ Route::middleware(['auth'])->group(function () {
     
 
     Route::get('/posttypes', [PostTypeController::class, 'index'])->name('posttypes');
-    Route::get('/posttypes/{post_type}', [PostTypeController::class, 'show']);
+    Route::get('/posttypes/{post_type}/edit', [PostTypeController::class, 'edit']);
     Route::post('/posttypes', [PostTypeController::class, 'store']);
     Route::put('/posttypes/{post_type}', [PostTypeController::class, 'update']);
+    Route::delete('/posttypes/{post_type}', [PostTypeController::class, 'destroy']);
+
 
     Route::get('/posttypes/{post_type}/posts', [PostTypePostController::class, 'index']);
 
@@ -65,6 +67,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/authorizations/{authorization}/edit', [AuthorizationController::class, 'edit']);
     Route::post('/authorizations', [AuthorizationController::class, 'store']);
     Route::put('/authorizations/{authorization}', [AuthorizationController::class, 'update']);
+    Route::delete('/authorizations/{authorization}', [AuthorizationController::class, 'destroy']);
+
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::get('/users/{user}/edit', [UserController::class, 'edit']);

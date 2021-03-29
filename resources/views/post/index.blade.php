@@ -62,10 +62,10 @@
                                 @foreach ($post->datas as $key => $data)
                                     <td class="px-6 py-4">
                                         @if ($data->field->type == 'Relationship')
-                                            @isset($data->relationship)
+                                            @isset($data->relatedPost)
                                                 <a href="/posts/{{ $data->relationship_id }}/edit">
-                                                    @if ($data->relationship->getDataForFieldName('Name'))
-                                                        {{ $data->relationship->getDataForFieldName('Name')->value }}
+                                                    @if ($data->relatedPost->getDataForFieldName('Name'))
+                                                        {{ $data->relatedPost->getDataForFieldName('Name')->value }}
                                                     @else
                                                         -
                                                     @endif

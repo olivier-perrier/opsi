@@ -8,11 +8,12 @@ use App\Models\PostType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
 
-    public function __construct()
+    public function __construct(Post $post)
     {
         $this->middleware('auth');
     }
@@ -20,12 +21,14 @@ class PostController extends Controller
     public function index()
     {
         return view('post.index', [
-            'posts' => AUth::user()->posts,
+            'posts' => Auth::user()->posts,
         ]);
     }
 
     public function show(Post $post)
     {
+        Gate::authorize('manage-post', $post);
+
         return view('post.show', [
             'post' => $post
         ]);
@@ -70,8 +73,7 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
-
-
+        Gate::authorize('manage-post', $post);
 
         $validated = $request->validate([
             'name' => '',
@@ -101,19 +103,14 @@ class PostController extends Controller
 
     public function edit(Request $request, Post $post)
     {
+        Gate::authorize('manage-post', $post);
 
-        // Authorizations
-        $isAuth = $request->user()->authorized_posttypes()->contains('name', $post->postType->name);
-
-        if ($isAuth) {
-            return view('post.edit', ['post' => $post, 'posts' => Post::all()]);
-        } else {
-            abort(403);
-        }
+        return view('post.edit', ['post' => $post, 'posts' => Post::all()]);
     }
 
     public function destroy(Post $post)
     {
+        Gate::authorize('manage-post', $post);
 
         $post->datas()->delete();
 

@@ -33,15 +33,6 @@ class Post extends Model
         return $this->hasMany(Post::class, 'parent_id');
     }
 
-    // todo
-    public function children2()
-    {
-        if (isset($this->content['Parent']))
-            return Post::all()->where('id', $this->content['Parent']);
-        else
-            return;
-    }
-
     public function parent()
     {
         return $this->belongsTo(Post::class, 'parent_id');

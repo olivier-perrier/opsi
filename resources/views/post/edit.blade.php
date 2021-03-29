@@ -29,8 +29,8 @@
 
                     @if ($data->field->type == 'Relationship')
 
-                        <select name="datas[{{ $data->id }}]"
-                            id="input{{ $data->field->name }}" class="block w-full rounded" value={{ $data->value }}>
+                        <select name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
+                            class="block w-full rounded" value={{ $data->value }}>
                             <option value="" selected></option>
                             @foreach ($posts as $cur_post)
                                 <option value="{{ $cur_post->id }}"
@@ -42,14 +42,21 @@
 
                     @elseif($data->field->type == 'Textarea')
                         <textarea name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
-                            class="form-control" cols="30" rows="10">{{ $data->value }} </textarea>
+                            class="w-full" cols="30" rows="10">{{ $data->value }} </textarea>
 
                     @elseif($data->field->type == 'Text')
-                        <input type="text" id="input{{ $data->field->name }}" class="block w-full border-gray-300 rounded"
-                            name="datas[{{ $data->id }}]" value="{{ $data->value }}">
+                        <input type="text" id="input{{ $data->field->name }}"
+                            class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
+                            value="{{ $data->value }}">
 
+                    @elseif($data->field->type == 'Number')
+                        <input type="number" id="input{{ $data->field->name }}"
+                            class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
+                            value="{{ $data->value }}">
                     @else
-                        {{ $data->value }}
+                        <input type="text" id="input{{ $data->field->name }}"
+                            class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
+                            value="{{ $data->value }}">
                     @endif
 
                 </div>
@@ -58,7 +65,8 @@
             @endforeach
 
 
-            <button type="submit" class="py-2 px-4 bg-green-500 text-white font-semibold shadow-md rounded-lg">Submit</button>
+            <button type="submit"
+                class="py-2 px-4 bg-green-500 text-white font-semibold shadow-md rounded-lg">Submit</button>
 
         </form>
 
@@ -66,11 +74,11 @@
 
         {{-- Childrens --}}
 
-        @if ($post->children2())
+        @if ($post->children())
             <div class="mb-3">
                 <label for="parent" class="col-form-label">Children</label>
                 <ul>
-                    @foreach ($post->children2() as $child)
+                    @foreach ($post->children() as $child)
                         <li>
                             <a href="/posts/{{ $child->id }}">
                                 {{ $child->posttype->name }} - {{ $child->name }}

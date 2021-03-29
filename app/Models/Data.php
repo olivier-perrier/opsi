@@ -25,8 +25,8 @@ class Data extends Model
         return $this->belongsTo(Post::class);
     }
 
-    public function relationship()
+    public function relatedPost()
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Post::class, 'relationship_id');
     }
 }

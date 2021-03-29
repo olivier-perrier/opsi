@@ -19,13 +19,17 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // User
-        $user = User::factory(1)->create(['email' => 'olivier.perrier.j@gmail.com']);
+        User::factory(1)->create(['email' => 'olivier.perrier.j@gmail.com']);
         User::factory(1)->create(['email' => 'client@gmail.com']);
 
         $page = PostType::factory()->create(['name' => 'Page']);
         $post = PostType::factory()->create(['name' => 'Post']);
         $client = PostType::factory()->create(['name' => 'Client']);
         $contrat = PostType::factory()->create(['name' => 'Contrat']);
+
+        PostType::factory()->create(['name' => 'User', 'hidden' => true]);
+        PostType::factory()->create(['name' => 'Authorization', 'hidden' => true]);
+        PostType::factory()->create(['name' => 'Posttype', 'hidden' => true]);
 
         Authorization::factory()->create(['name' => 'Auth1']);
 

@@ -7,6 +7,7 @@ use App\Models\PostType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -18,16 +19,22 @@ class UserController extends Controller
 
     public function index()
     {
+        Gate::authorize('manage-users');
+
         return view('user.index', ['users' => User::all()]);
     }
 
     public function edit(User $user)
     {
+        Gate::authorize('manage-users');
+
         return view('user.edit', ['user' => $user, 'authorizations' => Authorization::all()]);
     }
 
     public function update(Request $request, User $user)
     {
+
+        Gate::authorize('manage-users');
 
         // dd(collect($request->input('authorizations'))->keys());
 

@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
                 // echo $item->posttypes . '</br>';
                 // echo 'carry = ' . $carry . '</br>';
                 // dd($carry->concat($carry, $item->posttypes));
-                return $carry->concat($item->posttypes);
+                return $carry->concat($item->posttypes->where('hidden', '!=', true));
             }, collect([]));
 
             // dd($menuSidebar);

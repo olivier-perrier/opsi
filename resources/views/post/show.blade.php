@@ -1,7 +1,7 @@
 @component('layouts.app')
 
     <x-slot name="header">
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ $post->posttype->name }} - {{ $post->name }}
             </h2>
@@ -16,22 +16,26 @@
         {{-- Name --}}
         <h1>{{ $post->name }}</h1>
 
-        {{-- Content --}}
-        <p>
-            {{ $post->content }}
-        </p>
+        {{-- Datas --}}
+        <div class="mt-3">
 
-        {{-- Fields --}}
-        <div>
-            @foreach ($post->posttype->fields as $field)
+            @foreach ($post->datas as $data)
 
-                <div>
-                    @if ($field->data($post))
-                        {{ $field->data($post)->value }}
+                <div class="mt-3 block p-5 border rounded-lg bg-white shadow-sm">
+
+                    @if ($data->field->type == 'Relationship')
+                        <span class="font-bold">{{ $data->field->name }} : </span>
+                        <a href="/posts/{{ $data->relatedPost->id }}" class="text-blue-500 underline">{{ $data->relatedPost->name }}</a>
+                    @else
+                    <span class="font-bold">{{ $data->field->name }} : </span>
+                    {{ $data->value }}
                     @endif
+
+
                 </div>
 
             @endforeach
+
         </div>
 
         {{-- Parent --}}
@@ -48,9 +52,10 @@
         @endisset
 
 
-        <p>
-            <a href="/posts/{{ $post->id }}/edit">Edit</a>
-        </p>
+        <div class="mt-3 flex justify-between">
+            <div></div>
+            <a href="/posts/{{ $post->id }}/edit" class="text-gray-500">Edit</a>
+        </div>
 
     </div>
 

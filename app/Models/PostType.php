@@ -23,5 +23,9 @@ class PostType extends Model
     {
         return $this->hasMany(Post::class, 'posttype_id');
     }
-    
+
+    public function authorizations()
+    {
+        return $this->belongsToMany(Authorization::class, 'authorization_posttype', 'posttype_id', 'authorization_id');
+    }
 }
