@@ -42,8 +42,11 @@ class PostTypeController extends Controller
             'name' => 'required'
         ]);
 
-        PostType::create($validated);
+        $posttype = PostType::create($validated);
 
+        // Set the new Post type in the first Authorization of the current user
+        $request->user()->authorizations->first()->posttypes()->attach($posttype);
+        
         return back();
     }
 

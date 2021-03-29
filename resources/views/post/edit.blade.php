@@ -103,7 +103,7 @@
                 <form action="/posts/{{ $post->id }}" method="post" id="formDelete">
                     @csrf
                     @method('DELETE')
-                    <button class="btn btn-link link-danger text-decoration-none" type="submit"
+                    <button class="text-red-400" type="submit"
                         form="formDelete">Delete</button>
                 </form>
             </div>

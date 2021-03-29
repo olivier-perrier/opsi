@@ -70,17 +70,17 @@
 
                                         <div class="">
                                             {{-- <label for="name" class="block font-bold">Name</label> --}}
-                                            <input type="text" name="name" class="block w-full rounded"
+                                            <input type="text" name="name" class="block w-full rounded-lg"
                                                 value="{{ $field->name }}">
                                         </div>
                                         <div class="">
                                             {{-- <label for="type" class="block font-bold">Type</label> --}}
-                                            <input type="text" name="type" class="block w-full rounded"
+                                            <input type="text" name="type" class="block w-full rounded-lg"
                                                 value="{{ $field->type }}">
                                         </div>
                                         <div class="">
                                             {{-- <label for="order" class="block font-bold">Order</label> --}}
-                                            <input type="number" name="order" class="block w-full rounded"
+                                            <input type="number" name="order" min=0 class="block w-full rounded-lg"
                                                 value="{{ $field->order }}">
                                         </div>
                                         <div class="mt-auto">
@@ -98,7 +98,7 @@
                                 <form action="/fields/{{ $field->id }}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500">Delete</button>
+                                    <button type="submit" class="text-red-400">Delete</button>
                                 </form>
                             </div>
 
@@ -137,7 +137,7 @@
                 </div>
                 <div class="">
                     {{-- <label for="order" class="visually-hidden">Order</label> --}}
-                    <input type="number" name="order" class="w-full rounded-lg" id="order" placeholder="Order"
+                    <input type="number" name="order" class="w-full rounded-lg" min=0 id="order" placeholder="Order"
                         value="{{ @old('order') }}">
                 </div>
                 <div class="my-auto">

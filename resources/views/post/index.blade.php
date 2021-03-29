@@ -89,7 +89,7 @@
                                 <form action="/posts/{{ $post->id }}" method="post" id="formDelete">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn-link text-red-500 text-decoration-none"
+                                    <button class="btn-link text-red-400 text-decoration-none"
                                         type="submit">Delete</button>
                                 </form>
                             </td>

@@ -2,11 +2,11 @@
 
 
     <x-slot name="header">
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Post types') }}
             </h2>
-            <a href="/posttypes/create">Create</a>
+            <a href="/posttypes">Create</a>
         </div>
     </x-slot>
 
@@ -40,7 +40,7 @@
                                     class="text-right">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="text-red-500" type="submit">Delete</button>
+                                    <button class="text-red-400" type="submit">Delete</button>
                                 </form>
                             </td>
 

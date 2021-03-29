@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
     
 
     Route::get('/posttypes', [PostTypeController::class, 'index'])->name('posttypes');
+    Route::get('/posttypes/create', [PostTypeController::class, 'create']);
     Route::get('/posttypes/{post_type}/edit', [PostTypeController::class, 'edit']);
     Route::post('/posttypes', [PostTypeController::class, 'store']);
     Route::put('/posttypes/{post_type}', [PostTypeController::class, 'update']);
