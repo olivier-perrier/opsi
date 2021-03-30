@@ -35,14 +35,19 @@
                             @foreach ($posts as $cur_post)
                                 <option value="{{ $cur_post->id }}"
                                     {{ $cur_post->id == $data->relationship_id ? 'selected' : '' }}>
-                                    {{ $cur_post->postType->name }} - {{ $cur_post->name }}
+                                    {{ $cur_post->postType->name }} -
+                                    @if ($cur_post->getDataForFieldName('Name'))
+                                        {{ $cur_post->getDataForFieldName('Name')->value }}
+                                    @else
+                                        <span>"No name"</span>
+                                    @endif
                                 </option>
                             @endforeach
                         </select>
 
                     @elseif($data->field->type == 'Textarea')
-                        <textarea name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
-                            class="w-full" cols="30" rows="10">{{ $data->value }} </textarea>
+                        <textarea name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}" class="w-full"
+                            cols="30" rows="10">{{ $data->value }} </textarea>
 
                     @elseif($data->field->type == 'Text')
                         <input type="text" id="input{{ $data->field->name }}"
@@ -53,6 +58,21 @@
                         <input type="number" id="input{{ $data->field->name }}"
                             class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
                             value="{{ $data->value }}">
+
+                    @elseif($data->field->type == 'Relationship_Field')
+
+                        <select name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
+                            class="block w-full rounded" value={{ $data->value }}>
+                            <option value="" selected></option>
+                            @foreach ($fields as $field)
+                                <option value="{{ $field->id }}"
+                                    {{ $field->id == $data->related_field_id ? 'selected' : '' }}>
+                                    {{ $field->postType->name }} -
+                                    {{ $field->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
                     @else
                         <input type="text" id="input{{ $data->field->name }}"
                             class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
@@ -103,8 +123,7 @@
                 <form action="/posts/{{ $post->id }}" method="post" id="formDelete">
                     @csrf
                     @method('DELETE')
-                    <button class="text-red-400" type="submit"
-                        form="formDelete">Delete</button>
+                    <button class="text-red-400" type="submit" form="formDelete">Delete</button>
                 </form>
             </div>
         </div>

@@ -36,3 +36,5 @@ doskey ccga=codecept generate:cept acceptance $*
 doskey ccru=codecept --colors run unit $*
 doskey ccrf=codecept --ansi run functional $*
 doskey ccra=codecept run acceptance $*
+
+doskey pas=php artisan schedule:work

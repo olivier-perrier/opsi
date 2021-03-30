@@ -131,6 +131,7 @@
                         <select name="type" id="type" class="w-full rounded-lg">
                             <option value="Number" {{ @old('type') == 'Number' ? 'selected' :'' }}>Number</option>
                             <option value="Relationship" {{ @old('type') == 'Relationship' ? 'selected' : '' }}>Relationship</option>
+                            <option value="Relationship_Field" {{ @old('type') == 'Relationship_Field' ? 'selected' : '' }}>Relationship_Field</option>
                             <option value="Text" {{ @old('type') == 'Text' ? 'selected' :'' }}>Text</option>
                             <option value="Textarea" {{ @old('type') == 'Textarea' ? 'selected' : '' }}>Textarea</option>
                         </select>

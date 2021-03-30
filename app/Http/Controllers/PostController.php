@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Data;
+use App\Models\Field;
 use App\Models\PostType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Response;
 
 class PostController extends Controller
 {
@@ -92,6 +94,9 @@ class PostController extends Controller
                 if ($data->field->type == 'Relationship') {
 
                     $data->update(['relationship_id' => $dataValue]);
+                } else if ($data->field->type == 'Relationship_Field') {
+                    // dd($data);
+                    $data->update(['related_field_id' => $dataValue]);
                 } else {
                     $data->update(['value' => $dataValue]);
                 }
@@ -105,7 +110,7 @@ class PostController extends Controller
     {
         Gate::authorize('manage-post', $post);
 
-        return view('post.edit', ['post' => $post, 'posts' => Post::all()]);
+        return view('post.edit', ['post' => $post, 'posts' => Post::all(), 'fields' => Field::all()]);
     }
 
     public function destroy(Post $post)

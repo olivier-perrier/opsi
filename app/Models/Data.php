@@ -9,10 +9,11 @@ class Data extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['post_id', 'field_id', 'value', 'value_json', 'relationship_id', 'order'];
+    protected $fillable = ['post_id', 'field_id', 'value', 'value_json', 'relationship_id', 'related_field_id', 'order'];
 
     protected $casts = [
-        'value_json' => 'array',
+        // 'value_json' => 'array',
+        // 'value_json' => 'collection',
     ];
 
     public function field()
@@ -29,4 +30,11 @@ class Data extends Model
     {
         return $this->belongsTo(Post::class, 'relationship_id');
     }
+
+    public function relatedField()
+    {
+        return $this->belongsTo(Field::class);
+    }
+
+  
 }
