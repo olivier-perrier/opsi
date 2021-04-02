@@ -36,5 +36,10 @@ class Data extends Model
         return $this->belongsTo(Field::class);
     }
 
+    public function listedDatas()
+    {
+        return $this->belongsTo(Data::class);
+    }
+
   
 }

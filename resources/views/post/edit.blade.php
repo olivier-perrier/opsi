@@ -59,6 +59,14 @@
                             class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
                             value="{{ $data->value }}">
 
+                    @elseif($data->field->type == 'List')
+
+                        {{ $data->listedDatas }}
+
+                        <input type="text" id="input{{ $data->field->name }}"
+                            class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
+                            value="{{ $data->value }}">
+
                     @elseif($data->field->type == 'Relationship_Field')
 
                         <select name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
@@ -73,10 +81,10 @@
                             @endforeach
                         </select>
 
-                    @else
+                    {{-- @else
                         <input type="text" id="input{{ $data->field->name }}"
                             class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
-                            value="{{ $data->value }}">
+                            value="{{ $data->value }}"> --}}
                     @endif
 
                 </div>

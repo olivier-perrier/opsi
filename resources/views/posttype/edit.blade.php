@@ -129,6 +129,7 @@
                 <div class="">
                     {{-- <label for="type" class="visually-hidden">Type</label> --}}
                         <select name="type" id="type" class="w-full rounded-lg">
+                            <option value="List" {{ @old('type') == 'List' ? 'selected' :'' }}>List</option>
                             <option value="Number" {{ @old('type') == 'Number' ? 'selected' :'' }}>Number</option>
                             <option value="Relationship" {{ @old('type') == 'Relationship' ? 'selected' : '' }}>Relationship</option>
                             <option value="Relationship_Field" {{ @old('type') == 'Relationship_Field' ? 'selected' : '' }}>Relationship_Field</option>

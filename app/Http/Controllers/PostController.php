@@ -87,6 +87,8 @@ class PostController extends Controller
         // Update the datas
         if ($request->has('datas')) {
 
+            // dd($request->input('datas'));
+
             foreach ($request->input('datas') as $key => $dataValue) {
 
                 $data = Data::find($key);
@@ -97,6 +99,13 @@ class PostController extends Controller
                 } else if ($data->field->type == 'Relationship_Field') {
                     // dd($data);
                     $data->update(['related_field_id' => $dataValue]);
+                } else if ($data->field->type == 'List') {
+                    // dd($key . ' => ' . $dataValue);
+                    // dd($data);
+                    // TODO
+                    // Field id doit etre de type text !!!
+                    Data::create(['value' => $dataValue, 'post_id' => $post->id, 'field_id' => $data->field->id]);
+                    // $data->update(['related_field_id' => $dataValue]);
                 } else {
                     $data->update(['value' => $dataValue]);
                 }
