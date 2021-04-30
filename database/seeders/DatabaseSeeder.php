@@ -27,9 +27,9 @@ class DatabaseSeeder extends Seeder
         $client = PostType::factory()->create(['name' => 'Client']);
         $contrat = PostType::factory()->create(['name' => 'Contrat']);
 
-        PostType::factory()->create(['name' => 'User', 'hidden' => true]);
-        PostType::factory()->create(['name' => 'Authorization', 'hidden' => true]);
-        PostType::factory()->create(['name' => 'Posttype', 'hidden' => true]);
+        // PostType::factory()->create(['name' => 'User', 'hidden' => true]);
+        // PostType::factory()->create(['name' => 'Authorization', 'hidden' => true]);
+        // PostType::factory()->create(['name' => 'Posttype', 'hidden' => true]);
 
         Authorization::factory()->create(['name' => 'Auth1']);
 

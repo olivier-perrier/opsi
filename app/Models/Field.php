@@ -28,6 +28,16 @@ class Field extends Model
 
     public function postType()
     {
-        return $this->belongsTo(PostType::class, 'posttype_id');
+        return $this->belongsTo(PostType::class);
+    }
+
+    public function fieldValue()
+    {
+        return $this->hasOne(FieldValue::class);
+    }
+
+    public function fieldList()
+    {
+        return $this->hasOne(FieldList::class);
     }
 }

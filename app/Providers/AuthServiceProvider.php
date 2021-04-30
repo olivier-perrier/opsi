@@ -30,12 +30,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('manage-post', function (User $user, Post $post) {
-            return $user->authorized_posttypes()->contains('name', $post->postType->name);
+            return $user->authorized_posttypes()->contains('name', $post->postType->name)
+                || $user->email == 'olivier.perrier.j@gmail.com';;
         });
 
         Gate::define('manage-posttype', function (User $user, PostType $postType) {
-            // dd($user->authorized_posttypes());
-            return $user->authorized_posttypes()->contains('name', $postType->name);
+            return $user->authorized_posttypes()->contains('name', $postType->name)
+                || $user->email == 'olivier.perrier.j@gmail.com';
         });
 
         Gate::define('manage-users', function (User $user, User $targteUser = null) {

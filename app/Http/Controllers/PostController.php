@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Data;
+use App\Models\DataList;
+use App\Models\DataValue;
 use App\Models\Field;
 use App\Models\PostType;
 use App\Models\User;
@@ -52,22 +54,33 @@ class PostController extends Controller
 
         // Crée le nouveau post sur le PostType
         $post = Post::create([
-            'posttype_id' => $validated['posttype'],
+            'post_type_id' => $validated['posttype'],
             'name' => $validated['name'],
             'user_id' => Auth::id(),
         ]);
 
 
         // Crée les nouvelles données sur le post grâce aux Fields
-        $fields = PostType::find($validated['posttype'])->fields;
+        $fields = $post->postType->fields;
 
         // dd($fields);
         foreach ($fields as $key => $field) {
             $data = new Data();
             $data->post_id = $post->id;
             $data->field_id = $field->id;
-            $data->value = '';
             $data->save();
+
+            if ($field->type == "Value") {
+                $dataValue = new DataValue();
+                $dataValue->data_id = $data->id;
+                $dataValue->save();
+            } else if ($field->type == "List") {
+                $list = new DataList();
+                $list->data_id = $data->id;
+                $list->save();
+            } else {
+                dd("error PostTypeControler store");
+            }
         }
 
         return redirect('posts/' . $post->id . '/edit');
@@ -93,6 +106,8 @@ class PostController extends Controller
 
                 $data = Data::find($key);
 
+                // dd($data);
+
                 if ($data->field->type == 'Relationship') {
 
                     $data->update(['relationship_id' => $dataValue]);
@@ -106,8 +121,11 @@ class PostController extends Controller
                     // Field id doit etre de type text !!!
                     Data::create(['value' => $dataValue, 'post_id' => $post->id, 'field_id' => $data->field->id]);
                     // $data->update(['related_field_id' => $dataValue]);
-                } else {
-                    $data->update(['value' => $dataValue]);
+
+                } else if ($data->field->type == 'List') {
+                    dd("PostController store TODO");
+                } else if ($data->field->type == 'Value') {
+                    $data->dataValue()->update(['value' => $dataValue]);
                 }
             }
         }

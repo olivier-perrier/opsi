@@ -1,7 +1,5 @@
 @component('layouts.app')
 
-
-
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -20,6 +18,7 @@
             @method('PUT')
 
             {{-- New custom --}}
+
             @foreach ($post->datas as $data)
 
                 <div class="mb-6">
@@ -49,10 +48,10 @@
                         <textarea name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}" class="w-full"
                             cols="30" rows="10">{{ $data->value }} </textarea>
 
-                    @elseif($data->field->type == 'Text')
+                    @elseif($data->field->type == 'Value')
                         <input type="text" id="input{{ $data->field->name }}"
                             class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
-                            value="{{ $data->value }}">
+                            value="{{ $data->dataValue->value }}">
 
                     @elseif($data->field->type == 'Number')
                         <input type="number" id="input{{ $data->field->name }}"
@@ -61,11 +60,14 @@
 
                     @elseif($data->field->type == 'List')
 
+                        {{$data->List}}
                         {{ $data->listedDatas }}
 
                         <input type="text" id="input{{ $data->field->name }}"
                             class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
                             value="{{ $data->value }}">
+
+                            Ajouter
 
                     @elseif($data->field->type == 'Relationship_Field')
 

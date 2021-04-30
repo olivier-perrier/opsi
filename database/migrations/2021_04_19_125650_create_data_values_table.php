@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostTypesTable extends Migration
+class CreateDataValuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreatePostTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('post_types', function (Blueprint $table) {
+        Schema::create('data_values', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->boolean("hidden");
+            $table->string('value')->nullable();
+            $table->foreignId("list_id")->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId("data_id")->nullable()->constrained('datas')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreatePostTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_types');
+        Schema::dropIfExists('data_values');
     }
 }

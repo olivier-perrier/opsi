@@ -11,7 +11,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['posttype_id', 'name', 'content', 'parent_id', 'user_id'];
+    protected $fillable = ['post_type_id', 'name', 'content', 'parent_id', 'user_id'];
 
     protected $casts = [
         'content' => 'array',
@@ -20,12 +20,12 @@ class Post extends Model
 
     public function postType()
     {
-        return $this->belongsTo(PostType::class, 'posttype_id');
+        return $this->belongsTo(PostType::class);
     }
 
     public function datas()
     {
-        return $this->hasMany(Data::class)->orderBy('order');
+        return $this->hasMany(Data::class); //->orderBy('order');
     }
 
     public function children()

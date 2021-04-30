@@ -9,6 +9,8 @@ class Data extends Model
 {
     use HasFactory;
 
+    protected $table ='datas';
+
     protected $fillable = ['post_id', 'field_id', 'value', 'value_json', 'relationship_id', 'related_field_id', 'order'];
 
     protected $casts = [
@@ -39,6 +41,11 @@ class Data extends Model
     public function listedDatas()
     {
         return $this->belongsTo(Data::class);
+    }
+
+    public function dataValue()
+    {
+        return $this->hasOne(DataValue::class);
     }
 
   

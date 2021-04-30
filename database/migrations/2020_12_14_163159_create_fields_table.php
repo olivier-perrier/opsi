@@ -15,9 +15,9 @@ class CreateFieldsTable extends Migration
     {
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("posttype_id")->constrained();
             $table->string("name");
-            $table->string("type");
+            $table->foreignId("post_type_id")->constrained();
+            $table->enum("type", ['Value', 'List', 'Tab', 'Relation']);
             $table->integer("order")->nullable();
             $table->timestamps();
         });

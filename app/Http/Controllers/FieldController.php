@@ -29,12 +29,31 @@ class FieldController extends Controller
 
         $field = $postType->fields()->create($validated);
 
+        if ($field->type == 'Value') {
+
+            $field->fieldValue()->create();
+            // dd($field->fieldValue);
+        } else if ($field->type == 'List') {
+
+            $field->fieldList()->create();
+
+        } else {
+            dd(($field));
+        }
+
         // Create data for every post with this new field
         foreach ($field->posttype->posts as $post) {
-            $post->datas()->create(['field_id' => $field->id, 'order' => $field->order]);
+            $post->datas()->create(['field_id' => $field->id]);
         }
 
         return back();
+    }
+
+    public function edit(Request $request, Field $field)
+    {
+        // Gate::authorize('manage-post', $field);
+
+        return view('field.edit', ['field' => $field]);
     }
 
 

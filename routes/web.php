@@ -60,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/fields', [FieldController::class, 'index']);
     Route::post('/fields', [FieldController::class, 'store']);
+    Route::get('/fields/{field}/edit', [FieldController::class, 'edit']);
     Route::put('/fields/{field}', [FieldController::class, 'update']);
     Route::delete('/fields/{field}', [FieldController::class, 'destroy']);
 

@@ -27,7 +27,7 @@ class PostTypeController extends Controller
 
     public function edit(PostType $postType)
     {
-        Gate::authorize('manage-posttypes');
+        // Gate::authorize('manage-posttypes');
 
         return view('posttype.edit', [
             'postType' => $postType
@@ -39,13 +39,13 @@ class PostTypeController extends Controller
         Gate::authorize('manage-posttypes');
 
         $validated = $request->validate([
-            'name' => 'required'
+            'name' => 'required',
         ]);
 
         $posttype = PostType::create($validated);
 
         // Set the new Post type in the first Authorization of the current user
-        $request->user()->authorizations->first()->posttypes()->attach($posttype);
+        // $request->user()->authorizations->first()->posttypes()->attach($posttype);
         
         return back();
     }
