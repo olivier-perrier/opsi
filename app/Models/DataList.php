@@ -9,5 +9,10 @@ class DataList extends Model
 {
     use HasFactory;
 
-    protected $table ="lists";
+    protected $fillable = ['data_id'];
+
+    public function dataValues()
+    {
+        return $this->hasMany(DataValue::class);
+    }
 }

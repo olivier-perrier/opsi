@@ -9,8 +9,16 @@ class DataValue extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['value'];
+
+
     public function data()
     {
         return $this->belongsTo(Data::class);
+    }
+
+    public function dataList()
+    {
+        return $this->belongsTo(DataList::class);
     }
 }

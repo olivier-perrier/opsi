@@ -16,7 +16,7 @@ class CreateDataValuesTable extends Migration
         Schema::create('data_values', function (Blueprint $table) {
             $table->id();
             $table->string('value')->nullable();
-            $table->foreignId("list_id")->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId("data_list_id")->nullable()->constrained()->onDelete('cascade');
             $table->foreignId("data_id")->nullable()->constrained('datas')->onDelete('cascade');
             $table->timestamps();
         });

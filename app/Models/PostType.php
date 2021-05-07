@@ -9,7 +9,11 @@ class PostType extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'order'];
+    protected $fillable = ['name', 'order', 'hidden'];
+
+    protected $attributes = [
+        'hidden' => false,
+    ];
 
 
     public function fields()

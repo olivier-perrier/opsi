@@ -11,7 +11,7 @@ class Data extends Model
 
     protected $table ='datas';
 
-    protected $fillable = ['post_id', 'field_id', 'value', 'value_json', 'relationship_id', 'related_field_id', 'order'];
+    protected $fillable = ['post_id', 'field_id', 'order'];
 
     protected $casts = [
         // 'value_json' => 'array',
@@ -38,14 +38,14 @@ class Data extends Model
         return $this->belongsTo(Field::class);
     }
 
-    public function listedDatas()
-    {
-        return $this->belongsTo(Data::class);
-    }
-
     public function dataValue()
     {
         return $this->hasOne(DataValue::class);
+    }
+
+    public function dataList()
+    {
+        return $this->hasOne(DataList::class);
     }
 
   

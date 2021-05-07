@@ -115,15 +115,26 @@ class PostController extends Controller
                     // dd($data);
                     $data->update(['related_field_id' => $dataValue]);
                 } else if ($data->field->type == 'List') {
-                    // dd($key . ' => ' . $dataValue);
-                    // dd($data);
-                    // TODO
-                    // Field id doit etre de type text !!!
-                    Data::create(['value' => $dataValue, 'post_id' => $post->id, 'field_id' => $data->field->id]);
-                    // $data->update(['related_field_id' => $dataValue]);
+                    // dd($data->dataList);
+                    // dd($dataValue);
+                    foreach ($dataValue as $dataValueKey => $dataValueItem) {
 
-                } else if ($data->field->type == 'List') {
-                    dd("PostController store TODO");
+                        $dataValueExisting = DataValue::find($dataValueKey);
+
+                        if ($dataValueExisting) {
+                            $dataValueExisting->update(['value' => $dataValueItem]);
+                            // dd($dataValueExisting);
+
+                        } else {
+                            if ($dataValueItem != "") {
+
+                                $newDataValue = DataValue::create([
+                                    'value' =>  $dataValueItem,
+                                ]);
+                                $data->dataList->dataValues()->save($newDataValue);
+                            }
+                        }
+                    }
                 } else if ($data->field->type == 'Value') {
                     $data->dataValue()->update(['value' => $dataValue]);
                 }

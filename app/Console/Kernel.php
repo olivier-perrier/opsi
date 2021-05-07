@@ -33,11 +33,15 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             // dd('starting...');
+            echo 'starting\n';
+
 
             // Todo create a specific WS user et find it here
             $wsUser = User::first();
 
             $webServices = PostType::where('name', 'Webservice')->first()->posts()->get();
+            echo 'webServices = ' . $webServices . "\n";
+
             foreach ($webServices as $webService) {
 
 

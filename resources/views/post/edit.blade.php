@@ -26,6 +26,9 @@
                     {{-- Print label --}}
                     <label for="input{{ $data->field->name }}" class="block mb-1">{{ $data->field->name }}</label>
 
+                    {{-- DEBUG --}}
+                    Type : {{ $data->field->type }}
+
                     @if ($data->field->type == 'Relationship')
 
                         <select name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
@@ -60,14 +63,35 @@
 
                     @elseif($data->field->type == 'List')
 
-                        {{$data->List}}
-                        {{ $data->listedDatas }}
+                        @if ($data->dataList)
 
+                            {{-- DEBUG --}}
+                            DataList id : {{ $data->dataList->id }} <br>
+
+                            @if ($data->dataList->dataValues)
+
+                                {{-- DEBUG --}}
+                                Nomber of values in the list : {{ count($data->dataList->dataValues) }} <br>
+
+                                @foreach ($data->dataList->dataValues as $dataValue)
+
+                                    <input type="text" id="input{{ $data->field->name }}"
+                                        class="mb-1 block w-full border-gray-300 rounded"
+                                        name="datas[{{ $data->id }}][{{ $dataValue->id }}]"
+                                        value="{{ $dataValue->value }}">
+
+                                @endforeach
+
+                            @endif
+
+                        @endif
+
+                        Ajouter
                         <input type="text" id="input{{ $data->field->name }}"
-                            class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
+                            class="block w-full border-gray-300 rounded"
+                            name="datas[{{ $data->id }}][]"
                             value="{{ $data->value }}">
 
-                            Ajouter
 
                     @elseif($data->field->type == 'Relationship_Field')
 
@@ -83,7 +107,7 @@
                             @endforeach
                         </select>
 
-                    {{-- @else
+                        {{-- @else
                         <input type="text" id="input{{ $data->field->name }}"
                             class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
                             value="{{ $data->value }}"> --}}
