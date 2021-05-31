@@ -12,9 +12,9 @@ class Authorization extends Model
     protected $fillable = ['name', 'authorization_id', 'posttype_id'];
 
 
-    public function posttypes()
+    public function postTypes()
     {
-        return $this->belongsToMany(Posttype::class, 'authorization_posttype', 'authorization_id', 'posttype_id');
+        return $this->belongsToMany(Posttype::class, 'authorization_posttype', 'authorization_id', 'post_type_id');
     }
 
     public function users()

@@ -17,6 +17,13 @@
             @csrf
             @method('PUT')
 
+            {{-- Name --}}
+            <div class="mb-2">
+                <label for="name" class="block mb-1">Name</label>
+                <input type="text" id="name" class="block w-full border-gray-300 rounded" name="name"
+                    value="{{ $post->name }}">
+            </div>
+
             {{-- New custom --}}
 
             @foreach ($post->datas as $data)
@@ -24,10 +31,12 @@
                 <div class="mb-6">
 
                     {{-- Print label --}}
-                    <label for="input{{ $data->field->name }}" class="block mb-1">{{ $data->field->name }}</label>
-
-                    {{-- DEBUG --}}
-                    Type : {{ $data->field->type }}
+                    <label for="input{{ $data->field->name }}" class="block mb-1">
+                        {{ $data->field->name }}
+                        @if ($data->field->type == 'List')
+                            ({{ count($data->dataList->dataValues) }})
+                        @endif
+                    </label>
 
                     @if ($data->field->type == 'Relationship')
 
@@ -65,32 +74,23 @@
 
                         @if ($data->dataList)
 
-                            {{-- DEBUG --}}
-                            DataList id : {{ $data->dataList->id }} <br>
-
                             @if ($data->dataList->dataValues)
 
-                                {{-- DEBUG --}}
-                                Nomber of values in the list : {{ count($data->dataList->dataValues) }} <br>
+                                <ul>
+                                    @foreach ($data->dataList->dataValues as $dataValue)
+                                        <li>
+                                            <span>{{ $dataValue->value }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
 
-                                @foreach ($data->dataList->dataValues as $dataValue)
+                                <a href="/dataList/{{ $data->dataList->id }}/edit"
+                                    class="my-2 block font-bold text-indigo-600 hover:text-indigo-900">Edit</a>
 
-                                    <input type="text" id="input{{ $data->field->name }}"
-                                        class="mb-1 block w-full border-gray-300 rounded"
-                                        name="datas[{{ $data->id }}][{{ $dataValue->id }}]"
-                                        value="{{ $dataValue->value }}">
-
-                                @endforeach
 
                             @endif
 
                         @endif
-
-                        Ajouter
-                        <input type="text" id="input{{ $data->field->name }}"
-                            class="block w-full border-gray-300 rounded"
-                            name="datas[{{ $data->id }}][]"
-                            value="{{ $data->value }}">
 
 
                     @elseif($data->field->type == 'Relationship_Field')

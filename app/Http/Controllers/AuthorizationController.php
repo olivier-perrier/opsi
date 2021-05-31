@@ -46,17 +46,14 @@ class AuthorizationController extends Controller
 
     public function edit(Authorization $authorization)
     {
-        Gate::authorize('manage-authorizations');
+        // Gate::authorize('manage-authorizations');
 
-        // if (Auth::id() == $post->user_id) {
         return view(
             'authorization.edit',
             ['authorization' => $authorization, 'posttypes' => PostType::all()]
             // ['authorization' => $authorization, 'posttypes' => PostType::where('hidden', false)->orWhereNull('hidden')->get()]
         );
-        // } else {
-        // abort(403);
-        // }
+    
     }
 
     public function update(Request $request, Authorization $authorization)

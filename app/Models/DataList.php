@@ -15,4 +15,9 @@ class DataList extends Model
     {
         return $this->hasMany(DataValue::class);
     }
+
+    public function data()
+    {
+        return $this->belongsTo(Data::class);
+    }
 }

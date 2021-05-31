@@ -9,6 +9,9 @@ use App\Http\Controllers\PostTypePostController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\AuthorizationController;
 use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\DataValueController;
+use App\Http\Controllers\DataListController;
 use App\Models\Post;
 
 /*
@@ -73,11 +76,16 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/users/create', [UserController::class, 'create']);
     Route::get('/users/{user}/edit', [UserController::class, 'edit']);
     Route::post('/users', [UserController::class, 'store']);
     Route::put('/users/{user}', [UserController::class, 'update']);
 
 
+    Route::get('/dataList/{dataList}/edit', [DataListController::class, 'edit']);
+    Route::put('/dataList/{dataList}', [DataListController::class, 'update']);
+
+    Route::post('/dataValue', [DataValueController::class, 'store']);
 
 });
 

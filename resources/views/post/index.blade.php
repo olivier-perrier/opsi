@@ -28,6 +28,7 @@
                 <thead class="uppercase text-gray-500 bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-left">Id</th>
+                        <th scope="col" class="px-6 py-3 text-left">Name</th>
                         @empty($posttype)
                             <th scope="col" class="px-6 py-3 text-left">Type</th>
                         @endempty
@@ -48,6 +49,11 @@
                         <tr class="hover:bg-gray-50">
                             <td scope="row" class="px-6 py-4">
                                 <a href="/posts/{{ $post->id }}/edit" class="block text-blue-500">{{ $post->id }}</a>
+                            </td>
+
+                            {{-- Nanme --}}
+                            <td scope="row" class="px-6 py-4">
+                                <a href="/posts/{{ $post->id }}/edit" class="block text-blue-500">{{ $post->name }}</a>
                             </td>
 
                             {{-- Type --}}

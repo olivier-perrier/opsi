@@ -33,6 +33,12 @@
             </div>
 
             <div class="mb-3">
+                <label for="email" class="block">Email</label>
+                <label for="email" class="block">{{ $user->email }}</label>
+            </div>
+            
+
+            <div class="mb-3">
                 <label for="posttypes" class="block">Authorizations</label>
 
                 @foreach ($authorizations as $authorization)

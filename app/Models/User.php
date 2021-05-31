@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'parent_id'
     ];
 
     /**
@@ -62,6 +63,11 @@ class User extends Authenticatable
         }, collect([]));
 
         return $menuSidebar->unique('name');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(User::class, "parent_id", "id");
     }
 
 }

@@ -4,8 +4,11 @@
         <div class="flex justify-between">
 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('User') }}
+                {{ __('Users') }}
             </h2>
+
+            <a href="/users/create">Create</a>
+
 
         </div>
     </x-slot>
@@ -19,6 +22,12 @@
 
 
     <div class="container py-6">
+
+        <div class="mb-3">
+            Me 
+            <a href="/users/{{ Auth::id() }}/edit" class="text-blue-500 underline">{{  Auth::user()->name }}</a> <br>
+        </div>
+
 
         @foreach ($users as $user)
 

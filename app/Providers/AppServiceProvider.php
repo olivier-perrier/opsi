@@ -31,19 +31,19 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.app', function ($view) {
 
-
-            $menuSidebar = Auth::user()->authorizations->reduce(function ($carry, $item) {
+            // dd(auth()->user()->authorizations->reduce());
+            $menuSidebar = auth()->user()->authorizations->reduce(function ($carry, $item) {
                 // echo $item->posttypes . '</br>';
                 // echo 'carry = ' . $carry . '</br>';
                 // dd($carry->concat($carry, $item->posttypes));
-                return $carry->concat($item->posttypes->get()); //where('hidden', '=', true));
+                return $carry->concat($item->postTypes); //where('hidden', '=', true));
             }, collect([]));
 
             // dd($menuSidebar);
 
-            // $view->with('menuSidebar', $menuSidebar->unique('name'));
+            $view->with('menuSidebar', $menuSidebar->unique('name'));
 
-            $view->with('menuSidebar', PostType::all());
+            // $view->with('menuSidebar', PostType::all());
 
         });
     }

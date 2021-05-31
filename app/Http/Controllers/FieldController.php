@@ -32,19 +32,25 @@ class FieldController extends Controller
         if ($field->type == 'Value') {
 
             $field->fieldValue()->create();
-            // dd($field->fieldValue);
+
+            // For all Posts of this Post Type, I create the dataValue
+            foreach ($postType->posts as $post) {
+                $data = $post->datas()->create(['field_id' => $field->id]);
+                $data->dataValue()->create();
+            }
         } else if ($field->type == 'List') {
 
             $field->fieldList()->create();
 
+            // For all Posts of this Post Type, I create the dataValue
+            foreach ($postType->posts as $post) {
+                $data = $post->datas()->create(['field_id' => $field->id]);
+                $data->dataList()->create();
+            }
         } else {
             dd(($field));
         }
 
-        // Create data for every post with this new field
-        foreach ($field->posttype->posts as $post) {
-            $post->datas()->create(['field_id' => $field->id]);
-        }
 
         return back();
     }

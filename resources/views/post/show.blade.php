@@ -25,10 +25,23 @@
 
                     @if ($data->field->type == 'Relationship')
                         <span class="font-bold">{{ $data->field->name }} : </span>
-                        <a href="/posts/{{ $data->relatedPost->id }}" class="text-blue-500 underline">{{ $data->relatedPost->name }}</a>
-                    @else
-                    <span class="font-bold">{{ $data->field->name }} : </span>
-                    {{ $data->value }}
+                        <a href="/posts/{{ $data->relatedPost->id }}"
+                            class="text-blue-500 underline">{{ $data->relatedPost->name }}</a>
+                    @elseif ($data->field->type == 'Value')
+                        <span class="font-bold">{{ $data->field->name }} : </span>
+                        {{ $data->dataValue->value }}
+
+                    @elseif ($data->field->type == 'List')
+
+                        <span class="font-bold">{{ $data->field->name }} : </span>
+
+                        @foreach ($data->dataList->dataValues as $dataValue)
+                            <span>
+                                {{ $dataValue->value }}
+                            </span>
+
+                        @endforeach
+
                     @endif
 
 
