@@ -56,4 +56,9 @@ class Post extends Model
             return $this->datas->where('field_id', $field->id)->first();
         else return;
     }
+
+    public function relationships()
+    {
+        return $this->hasMany(DataRelationship::class);
+    }
 }

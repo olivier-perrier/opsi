@@ -45,13 +45,8 @@
                             <option value="" selected></option>
                             @foreach ($posts as $cur_post)
                                 <option value="{{ $cur_post->id }}"
-                                    {{ $cur_post->id == $data->relationship_id ? 'selected' : '' }}>
-                                    {{ $cur_post->postType->name }} -
-                                    @if ($cur_post->getDataForFieldName('Name'))
-                                        {{ $cur_post->getDataForFieldName('Name')->value }}
-                                    @else
-                                        <span>"No name"</span>
-                                    @endif
+                                    {{ $cur_post->id == $data->dataRelationship->post_id ? 'selected' : '' }}>
+                                    {{ $cur_post->postType->name }} - {{ $cur_post->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -76,10 +71,10 @@
 
                             @if ($data->dataList->dataValues)
 
-                                <ul>
+                                <ul class="p-3 block w-full border border-gray-300 rounded">
                                     @foreach ($data->dataList->dataValues as $dataValue)
-                                        <li>
-                                            <span>{{ $dataValue->value }}</span>
+                                        <li class="inline border-gray-300">
+                                            <span class="mr-2">{{ $dataValue->value }} </span>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -124,24 +119,6 @@
 
         </form>
 
-
-
-        {{-- Childrens --}}
-
-        @if ($post->children())
-            <div class="mb-3">
-                <label for="parent" class="col-form-label">Children</label>
-                <ul>
-                    @foreach ($post->children() as $child)
-                        <li>
-                            <a href="/posts/{{ $child->id }}">
-                                {{ $child->posttype->name }} - {{ $child->name }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
 
         {{-- Id and Delete --}}

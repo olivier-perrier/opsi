@@ -25,6 +25,38 @@
             <div class="mt-3">
                 <label for="posttypes" class="my-1 block">Post types</label>
 
+                {{-- {{$authorization->users}} --}}
+                {{-- {{$authorization->authorizationPosttypes}} --}}
+
+
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="mx-6 text-left">Post Type name</th>
+                            <th scope="col" class="mx-6 text-left">Read</th>
+                            <th scope="col" class="mx-6 text-left">Write</th>
+                            <th scope="col" class="mx-6 text-left">Owned</th>
+                            <th scope="col" class="mx-6 text-left">All</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach ($authorization->authorizationPosttypes as $authPosttype)
+
+                            <tr>
+                                <td>
+                                    {{ $authPosttype->postType->name }}
+                                </td>
+                                <td>{{ $authPosttype->read }}</td>
+                                <td>{{ $authPosttype->write }}</td>
+                                <td>{{ $authPosttype->own }}</td>
+                                <td>{{ $authPosttype->all }}</td>
+                            </tr>
+
+                        @endforeach
+                    </tbody>
+                </table>
+
                 <div class="grid md:grid-cols-3 gap-3">
 
                     @foreach ($posttypes as $posttype)

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRelationshipsTable extends Migration
+class CreateDataRelationshipsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateRelationshipsTable extends Migration
      */
     public function up()
     {
-        Schema::create('relationships', function (Blueprint $table) {
+        Schema::create('data_relationships', function (Blueprint $table) {
             $table->id();
             
             // Parent data of the relation 
-            $table->foreignId("data_id")->nullable()->constrained('datas');
+            $table->foreignId("data_id")->constrained('datas')->onDelete('cascade');
 
             // Value of the relation if it's a Post or a Post type
             $table->foreignId("post_id")->nullable()->constrained();
@@ -33,6 +33,6 @@ class CreateRelationshipsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('relationships');
+        Schema::dropIfExists('data_relationships');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Data;
 use App\Models\DataList;
 use App\Models\DataValue;
+use App\Models\DataRelationship;
 use App\Models\Field;
 use App\Models\PostType;
 use App\Models\User;
@@ -78,8 +79,12 @@ class PostController extends Controller
                 $list = new DataList();
                 $list->data_id = $data->id;
                 $list->save();
+            } else if ($field->type == "Relationship") {
+                $list = new DataRelationship();
+                $list->data_id = $data->id;
+                $list->save();
             } else {
-                dd("error PostTypeControler store");
+                dd("error PostControler store");
             }
         }
 
@@ -110,13 +115,12 @@ class PostController extends Controller
 
                 if ($data->field->type == 'Relationship') {
 
-                    $data->update(['relationship_id' => $dataValue]);
+                    $data->dataRelationship()->update(['post_id' => $dataValue]);
                 } else if ($data->field->type == 'Relationship_Field') {
                     // dd($data);
                     $data->update(['related_field_id' => $dataValue]);
                 } else if ($data->field->type == 'List') {
-                    // dd($data->dataList);
-                    // dd($dataValue);
+
                     foreach ($dataValue as $dataValueKey => $dataValueItem) {
 
                         $dataValueExisting = DataValue::find($dataValueKey);

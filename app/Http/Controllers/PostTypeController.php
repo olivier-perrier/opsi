@@ -67,7 +67,7 @@ class PostTypeController extends Controller
     {
         Gate::authorize('manage-posttypes');
 
-        $postType->authorizations()->detach();
+        // $postType->authorizations()->detach();
 
         if ($postType->posts->count()) {
             $request->session()->flash('message', 'Please delete all the Posts for this Post type before ' . $postType->posts->count());

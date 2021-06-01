@@ -15,7 +15,7 @@ class CreateFieldListsTable extends Migration
     {
         Schema::create('field_lists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("field_id")->constrained();
+            $table->foreignId("field_id")->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

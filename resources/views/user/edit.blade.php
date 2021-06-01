@@ -12,17 +12,6 @@
 
     <div class="container py-6">
 
-        <div>
-
-            Authorizations de l'utilisateurs
-
-            @foreach ($user->authorizations() as $auth)
-                {{ $auth }}
-            @endforeach
-
-        </div>
-
-
         <form action="/users/{{ $user->id }}" method="post" class="mb-3">
             @csrf
             @method('PUT')

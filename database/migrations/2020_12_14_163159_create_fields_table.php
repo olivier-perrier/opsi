@@ -17,7 +17,7 @@ class CreateFieldsTable extends Migration
             $table->id();
             $table->string("name");
             $table->foreignId("post_type_id")->constrained();
-            $table->enum("type", ['Value', 'List', 'Tab', 'Relation']);
+            $table->enum("type", ['Value', 'List', 'Tab', 'Relationship']);
             $table->integer("order")->nullable();
             $table->timestamps();
         });

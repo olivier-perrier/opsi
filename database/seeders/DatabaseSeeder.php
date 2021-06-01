@@ -18,8 +18,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $auth = Authorization::factory()->create(['name' => 'AuthAll']);
+
         // User
-        User::factory(1)->create(['email' => 'olivier.perrier.j@gmail.com']);
+        User::factory(1)->create(['email' => 'olivier.perrier.j@gmail.com', 'authorization_id' => $auth->id]);
         User::factory(1)->create(['email' => 'client@gmail.com']);
 
         $page = PostType::factory()->create(['name' => 'Page']);
@@ -31,7 +33,6 @@ class DatabaseSeeder extends Seeder
         // PostType::factory()->create(['name' => 'Authorization', 'hidden' => true]);
         // PostType::factory()->create(['name' => 'Posttype', 'hidden' => true]);
 
-        Authorization::factory()->create(['name' => 'Auth1']);
 
         // Fields
         // Field::factory()->for($contrat)->create(['name' => 'Client', 'type' => 'Relationship']);

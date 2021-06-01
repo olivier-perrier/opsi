@@ -44,23 +44,16 @@
 
                     <ul class="px-6 py-3">
 
-                        {{-- {{ $menuSidebar2 }} --}}
-                        {{-- @foreach ($menuSidebar2 as $menuItem)
-                            <li class="rounded hover:bg-gray-200 py-2">
-                                <a class="nav-link active px-2" aria-current="page"
-                                    href="/posttypes/{{ $menuItem->id }}/posts">
-                                    {{ $menuItem->name }}
-                                </a>
-                            </li>
-                        @endforeach --}}
 
-                        @foreach ($menuSidebar as $menuItem)
+                        @foreach ($autorization->postTypes as $postType)
+
                             <li class="rounded hover:bg-gray-200">
                                 <a class="nav-link active p-2 block w-full" aria-current="page"
-                                    href="/posttypes/{{ $menuItem->id }}/posts">
-                                    {{ $menuItem->name }}
+                                    href="/posttypes/{{ $postType->id }}/posts">
+                                    {{ $postType->name }}
                                 </a>
                             </li>
+
                         @endforeach
 
                     </ul>

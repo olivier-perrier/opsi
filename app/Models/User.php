@@ -48,26 +48,18 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
-    public function authorizations()
+    public function authorization()
     {
-        return $this->belongsToMany(Authorization::class);
+        return $this->belongsTo(Authorization::class);
     }
 
     public function authorized_posttypes()
     {
-        $menuSidebar = $this->authorizations->reduce(function ($carry, $item) {
-            // echo $item->posttypes . '</br>';
-            // echo 'carry = ' . $carry . '</br>';
-            // dd($carry->concat($carry, $item->posttypes));
-            return $carry->concat($item->posttypes);
-        }, collect([]));
-
-        return $menuSidebar->unique('name');
+        return $this->authorization->postTypes;
     }
 
     public function children()
     {
         return $this->hasMany(User::class, "parent_id", "id");
     }
-
 }

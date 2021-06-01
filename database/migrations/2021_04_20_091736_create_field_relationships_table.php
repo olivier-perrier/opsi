@@ -15,8 +15,9 @@ class CreateFieldRelationshipsTable extends Migration
     {
         Schema::create('field_relationships', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("field_id")->constrained();
-            $table->foreignId("post_type_id")->constrained();
+            $table->foreignId("field_id")->constrained()->onDelete('cascade');
+
+            $table->foreignId("post_type_id")->nullable()->constrained();
             $table->timestamps();
         });
     }

@@ -17,6 +17,10 @@ class CreateAuthorizationPosttypeTable extends Migration
             $table->id();
             $table->foreignId('authorization_id')->constrained()->onDelete('cascade');
             $table->foreignId('post_type_id')->constrained()->onDelete('cascade');
+            $table->boolean('read')->default(false);
+            $table->boolean('write')->default(false);
+            $table->boolean('own')->default(false);
+            $table->boolean('all')->default(false);
             $table->timestamps();
         });
     }

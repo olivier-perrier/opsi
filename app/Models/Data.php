@@ -48,5 +48,10 @@ class Data extends Model
         return $this->hasOne(DataList::class);
     }
 
+    public function dataRelationship()
+    {
+        return $this->hasOne(DataRelationship::class);
+    }
+
   
 }

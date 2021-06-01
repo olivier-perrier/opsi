@@ -14,12 +14,17 @@ class Authorization extends Model
 
     public function postTypes()
     {
-        return $this->belongsToMany(Posttype::class, 'authorization_posttype', 'authorization_id', 'post_type_id');
+        return $this->belongsToMany(Posttype::class, 'authorization_posttype', 'authorization_id', 'post_type_id')->orderBy('name');
+    }
+
+    public function authorizationPosttypes()
+    {
+        return $this->hasMany(AuthorizationPosttype::class);
     }
 
     public function users()
     {
-        return $this->belongsToMany(User::class); //, 'authorization_posttype', 'authorization_id', 'posttype_id');
+        return $this->hasMany(User::class);
     }
 
 }

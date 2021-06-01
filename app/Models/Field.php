@@ -40,4 +40,9 @@ class Field extends Model
     {
         return $this->hasOne(FieldList::class);
     }
+
+    public function fieldRelationship()
+    {
+        return $this->hasOne(FieldRelationship::class);
+    }
 }
