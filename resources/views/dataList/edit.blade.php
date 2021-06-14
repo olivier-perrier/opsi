@@ -19,7 +19,7 @@
 
             @foreach ($dataList->dataValues as $dataValue)
 
-                <input type="text" id="inputs[{{ $dataValue->id }}]" class="mb-1 block w-full border-gray-300 rounded"
+                <input type="text" id="inputs[{{ $dataValue->id }}]" class="mb-2 block w-full border-gray-300 rounded"
                     name="inputs[{{ $dataValue->id }}]" value="{{ $dataValue->value }}">
 
             @endforeach
@@ -27,7 +27,7 @@
             <button type="submit" class="py-2 px-4 bg-green-500 text-white shadow-md rounded-lg">Save</button>
         </form>
 
-        <form action="/dataValue?dataList={{ $dataList->id }}" method="post" class="mb-3">
+        <form action="/dataValue?dataList={{ $dataList->id }}" method="post" class="mb-3 flex justify-end">
             @csrf
 
             <button type="submit" class="py-2 px-4 bg-blue-500 text-white shadow-md rounded-lg">Add</button>

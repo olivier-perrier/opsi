@@ -25,8 +25,15 @@ class PostController extends Controller
 
     public function index()
     {
+
+        $posts = Auth::user()->organization->users->flatMap(function ($user, $key) {
+            return $user->posts;
+        });
+
+        // dd($posts);
+
         return view('post.index', [
-            'posts' => Auth::user()->posts,
+            'posts' => $posts,
         ]);
     }
 

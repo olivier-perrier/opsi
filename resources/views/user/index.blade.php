@@ -13,13 +13,6 @@
         </div>
     </x-slot>
 
-    {{-- <x-slot name="menuSidebar2">
-        <x-sidebar>
-            {{ $menuSidebar2 }}
-        </x-sidebar>
-    </x-slot> --}}
-
-
 
     <div class="container py-6">
 
@@ -29,6 +22,7 @@
         </div>
 
 
+        All users <br>
         @foreach ($users as $user)
 
             <a href="/users/{{ $user->id }}/edit" class="text-blue-500 underline">{{ $user->name }}</a> <br>

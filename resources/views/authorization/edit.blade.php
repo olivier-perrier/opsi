@@ -25,10 +25,6 @@
             <div class="mt-3">
                 <label for="posttypes" class="my-1 block">Post types</label>
 
-                {{-- {{$authorization->users}} --}}
-                {{-- {{$authorization->authorizationPosttypes}} --}}
-
-
                 <table class="min-w-full">
                     <thead>
                         <tr>
@@ -47,10 +43,22 @@
                                 <td>
                                     {{ $authPosttype->postType->name }}
                                 </td>
-                                <td>{{ $authPosttype->read }}</td>
-                                <td>{{ $authPosttype->write }}</td>
-                                <td>{{ $authPosttype->own }}</td>
-                                <td>{{ $authPosttype->all }}</td>
+                                <td>
+                                    <input name="check[{{ $authPosttype->id }}][read]" type="checkbox"
+                                        class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                        {{ $authPosttype->read ? 'checked' : '' }}>
+                                </td>
+                                <td>
+                                    <input name="check[{{ $authPosttype->id }}][write]" type="checkbox"
+                                        class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                        {{ $authPosttype->write ? 'checked' : '' }}>
+                                <td>
+                                    <input name="check[{{ $authPosttype->id }}][own]" type="checkbox"
+                                        class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                        {{ $authPosttype->write ? 'checked' : '' }}>
+                                <td> <input name="check[{{ $authPosttype->id }}][all]" type="checkbox"
+                                        class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                        {{ $authPosttype->all ? 'checked' : '' }}></td>
                             </tr>
 
                         @endforeach
@@ -81,7 +89,6 @@
                     {{ session('status') }}
                 </div>
             </div>
-
 
         </form>
 

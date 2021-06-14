@@ -21,7 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'parent_id'
+        'authorization_id'
     ];
 
     /**
@@ -58,8 +58,8 @@ class User extends Authenticatable
         return $this->authorization->postTypes;
     }
 
-    public function children()
+    public function organization()
     {
-        return $this->hasMany(User::class, "parent_id", "id");
+        return $this->belongsTo(Organization::class);
     }
 }

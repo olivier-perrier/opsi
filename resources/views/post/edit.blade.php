@@ -18,7 +18,7 @@
             @method('PUT')
 
             {{-- Name --}}
-            <div class="mb-2">
+            <div class="mb-6">
                 <label for="name" class="block mb-1">Name</label>
                 <input type="text" id="name" class="block w-full border-gray-300 rounded" name="name"
                     value="{{ $post->name }}">
@@ -28,7 +28,7 @@
 
             @foreach ($post->datas as $data)
 
-                <div class="mb-6">
+                <div class="mb-3">
 
                     {{-- Print label --}}
                     <label for="input{{ $data->field->name }}" class="block mb-1">
@@ -71,7 +71,7 @@
 
                             @if ($data->dataList->dataValues)
 
-                                <ul class="p-3 block w-full border border-gray-300 rounded">
+                                <ul class="p-2 block w-full border border-gray-300 rounded">
                                     @foreach ($data->dataList->dataValues as $dataValue)
                                         <li class="inline border-gray-300">
                                             <span class="mr-2">{{ $dataValue->value }} </span>
@@ -119,7 +119,22 @@
 
         </form>
 
-
+        {{-- Relationships --}}
+        @if (count($post->relationships))
+            <div class="mt-3">
+                <label>Relationships</label>
+                <ul>
+                    @foreach ($post->relationships as $relationship)
+                        <li>
+                            <a href="/posts/{{ $relationship->data->post->id }}" class="mx-2 text-blue-500">
+                                {{ $relationship->data->post->postType->name }} -
+                                {{ $relationship->data->post->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         {{-- Id and Delete --}}
         <div class="flex justify-between mt-5">

@@ -9,7 +9,7 @@ class Authorization extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'authorization_id', 'posttype_id'];
+    protected $fillable = ['name', 'authorization_id'];
 
 
     public function postTypes()

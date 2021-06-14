@@ -17,30 +17,28 @@
             @method('PUT')
 
             <div class="mb-3">
+                <label for="email" class="block">Email</label>
+                <label for="email" class="block">{{ $user->email }}</label>
+            </div>
+
+            <div class="mb-3">
                 <label for="name" class="block">Name</label>
                 <input type="text" name="name" class="mt-1 block w-full rounded-lg" value="{{ $user->name }}">
             </div>
 
             <div class="mb-3">
-                <label for="email" class="block">Email</label>
-                <label for="email" class="block">{{ $user->email }}</label>
-            </div>
-            
+                <label for="posttypes" class="block">Authorization</label>
 
-            <div class="mb-3">
-                <label for="posttypes" class="block">Authorizations</label>
+                <select name="authorization" id="authorization" class="my-2 px-4 min-w-full rounded-md shadow-md">
+                    <option value=""></option>
+                    @foreach ($authorizations as $authorization)
+                        <option value="{{ $authorization->id }}"
+                            {{ $authorization->id == $user->authorization_id ? 'selected' : '' }}>
+                            {{ $authorization->name }}
+                        </option>
+                    @endforeach
 
-                @foreach ($authorizations as $authorization)
-
-                    <div class="my-2 p-4 max-w-xs bg-white rounded-xl shadow-md">
-                        <label class="flex items-center space-x-3">
-                            <input type="checkbox" name="authorizations[{{ $authorization->id }}]"
-                                {{ $authorization->users->contains($user->id) ? 'checked' : '' }}
-                                class="form-tick appearance-none h-6 w-6 border border-gray-300 rounded-lg">
-                            <span class="">{{ $authorization->name }}</span>
-                        </label>
-                    </div>
-                @endforeach
+                </select>
 
             </div>
 

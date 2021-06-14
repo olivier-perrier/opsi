@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Authorization;
 use App\Models\Field;
+use App\Models\Organization;
 use App\Models\Post;
 use App\Models\PostType;
 use App\Models\User;
@@ -18,11 +19,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+        $organization = Organization::factory()->create(['name' => 'Company']);
+
         $auth = Authorization::factory()->create(['name' => 'AuthAll']);
 
+
         // User
-        User::factory(1)->create(['email' => 'olivier.perrier.j@gmail.com', 'authorization_id' => $auth->id]);
-        User::factory(1)->create(['email' => 'client@gmail.com']);
+        User::factory()->create([
+            'email' => 'olivier.perrier.j@gmail.com',
+            'authorization_id' => $auth->id,
+            'organization_id' => $organization->id
+        ]);
+        User::factory()->create([
+            'email' => 'client@gmail.com',
+            'organization_id' => $organization->id
+        ]);
 
         $page = PostType::factory()->create(['name' => 'Page']);
         $post = PostType::factory()->create(['name' => 'Post']);

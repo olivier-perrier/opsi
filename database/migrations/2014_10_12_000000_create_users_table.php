@@ -20,10 +20,10 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
-            $table->foreignId("parent_id")->nullable()->constrained("users", "id");
+            $table->foreignId("organization_id")->nullable()->constrained();
 
             $table->foreignId('authorization_id')->nullable()->constrained();
-
+            
             $table->rememberToken();
             $table->timestamps();
         });

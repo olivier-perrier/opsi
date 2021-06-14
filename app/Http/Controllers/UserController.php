@@ -23,9 +23,8 @@ class UserController extends Controller
     public function index()
     {
         // Gate::authorize('manage-users');
-        // dd(auth()->user()->children);
-        
-        return view('user.index', ['users' => auth()->user()->children]);
+
+        return view('user.index', ['users' => Auth::user()->organization->users->reject(function($user) { return $user->id == Auth::user()->id; })]);
     }
 
     public function create(Request $request)
@@ -47,9 +46,11 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make("password"),
-            'parent_id' => auth()->id()
+            'organization_id' => Auth::user()->organization->id,
             // 'password' => Hash::make($request->password),
         ]);
+
+        dd($user);
 
         // Auth::login($user = User::create([
         //     'name' => $request->name,
@@ -76,15 +77,12 @@ class UserController extends Controller
 
         Gate::authorize('manage-users');
 
-        // dd(collect($request->input('authorizations'))->keys());
+        $validated = $request->validate([
+            'authorization' => '',
+        ]);
 
-        // If no data sent then detach all
-        if ($request->has('authorizations')) {
-            $user->authorizations()->sync(collect($request->input('authorizations'))->keys());
-        } else {
-            $user->authorizations()->detach();
-        }
-        // dd($user);
+        $user->update(['authorization_id' => $validated['authorization']]);
+
         return back();
     }
 }

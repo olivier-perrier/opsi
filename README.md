@@ -62,5 +62,19 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Next step :
+
+- Déinir un objectif clair et réalisable
+
+    - Usecase
+
+        * L'administrateur se connecte et va créer les utilisateurs de l'application -> done
+        * L'administrateur crée le type de données qu'il va avoir besoin d'utiliser -> done
+        * L'administrateur associe les autorisations à ces utilisateurs et les données qu'il a crée
+        * L'administrateur test avec un de ces collegue
+        * Les utilisateurs créer des données
+        * Exploitation de l'application dans des cas réels
+        * Mise en production
+        * L'administrateur veut alimenter les données de son application avec les données d'une application existante
+
     - Add webservice subscription
     - Add Webservice delivery

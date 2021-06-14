@@ -54,10 +54,10 @@
 
         </div>
 
-        {{-- Parents --}}
+        {{-- Relationships --}}
         @if (count($post->relationships))
             <div class="mt-3">
-                <label>Parents</label>
+                <label>Relationships</label>
                 <ul>
                     @foreach ($post->relationships as $relationship)
                         <li>

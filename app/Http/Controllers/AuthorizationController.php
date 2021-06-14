@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Authorization;
+use App\Models\AuthorizationPosttype;
 use App\Models\PostType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -39,7 +41,12 @@ class AuthorizationController extends Controller
             'name' => 'required',
         ]);
 
-        $post = Authorization::create($validated);
+        $authorization = Authorization::create($validated);
+
+        // Create an AuthorizationsPostTypes for all the PostTypes that exist
+        foreach (PostType::all() as $postType) {
+            $authorization->authorizationPosttypes()->create(['post_type_id' => $postType->id]);
+        }
 
         return redirect('/authorizations');
     }
@@ -51,9 +58,7 @@ class AuthorizationController extends Controller
         return view(
             'authorization.edit',
             ['authorization' => $authorization, 'posttypes' => PostType::all()]
-            // ['authorization' => $authorization, 'posttypes' => PostType::where('hidden', false)->orWhereNull('hidden')->get()]
         );
-    
     }
 
     public function update(Request $request, Authorization $authorization)
@@ -63,19 +68,47 @@ class AuthorizationController extends Controller
         $validated = $request->validate([
             'name' => 'required',
         ]);
-        // dd($request);
-        // dd(collect($request->input('posttypes'))->keys());
 
-        // If no data sent then detach all
-        if ($request->has('posttypes')) {
+        // dd($request->input('check'));
+        foreach ($authorization->authorizationPosttypes as $authorizationPosttype) {
+            // dd($authorizationPosttype->id);
+            if (Arr::exists($request['check'], $authorizationPosttype->id)) {
+                $checkAuthPostType = $request['check'][$authorizationPosttype->id];
+                // if ($checkAuthPostType) {
+                // dd($checkAuthPostType);
+                if (Arr::exists($checkAuthPostType, 'read')) {
+                    // dd('exist');
+                    $authorizationPosttype->read = true;
+                } else {
+                    // dd('exist');
+                    $authorizationPosttype->read = false;
+                }
+                // dd('ok');
+                $authorizationPosttype->save();
 
-            // Create a collection of the request result
-            // then collect only the keys
-            // use the keys as sync attachement for the Model
-            $authorization->posttypes()->sync(collect($request->input('posttypes'))->keys());
-        } else {
-            $authorization->posttypes()->detach();
+                // }
+            } else {
+                // dd('not exist' .$authorizationPosttype->id );
+            }
+            if (collect($request->input('check'))->contains($authorizationPosttype->id)) {
+                dd('ok');
+            }
         }
+
+
+        // foreach ($request['check'] as $postTypeId => $postTypeAuthorizations) {
+        //     $opt = PostType::find($postTypeId)->authorizationsPosttypes->where('authorization_id', $authorization->id)->first();
+
+        //     $opt->read = false;
+        //     $opt->write = false;
+        //     $opt->own = false;
+        //     $opt->all = false;
+
+        //     foreach ($postTypeAuthorizations as $action => $value) {
+        //         $opt[$action] = true;
+        //     }
+        //     $opt->save();
+        // }
 
         return back()->with('status', 'Saved');;
     }
