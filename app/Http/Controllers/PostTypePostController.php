@@ -21,24 +21,22 @@ class PostTypePostController extends Controller
     {
         Gate::authorize('manage-posttype', $postType);
 
-        // $opt = Auth::user()->authorization->authorizationPosttypes()->where('post_type_id', $postType->id)->first();
+        // Getting the authorization of the user
+        $opt = Auth::user()->authorization->authorizationPosttypes()->where('post_type_id', $postType->id)->first();
 
-        // if ($opt->all) {
-        //     $up = $request->user()->organization->users()->with('posts')->get();
+        if ($opt->read || $opt->write) {
 
-        //     $posts = $up->flatMap->posts;
-        // } else if ($opt->own) {
-        //     $posts = $request->user()->posts()->where('post_type_id', $postType->id)->get();
-        // } else {
-        //     $posts = [];
-        // }
-        
-        $usersId = Auth::user()->organization->users->map(function ($user, $key) {
-            return $user->id;
-        });
+            // Get all users of the organization
+            $usersId = Auth::user()->organization->users->map(function ($user, $key) {
+                return $user->id;
+            });
 
-        $posts = $postType->posts->whereIn('user_id', $usersId);
-
+            // Get all posts of these users
+            $posts = $postType->posts->whereIn('user_id', $usersId);
+            
+        } else {
+            $posts = Auth::user()->posts->where('post_type_id', $postType->id);
+        }
 
         return view('post.index', ['posts' => $posts, 'posttype' => $postType]);
     }

@@ -15,11 +15,12 @@ class AuthorizationController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
     }
 
     public function index()
     {
-        Gate::authorize('manage-authorizations');
+        Gate::authorize('edit-authorizations');
 
         return view('authorization.index', [
             'authorizations' => Authorization::All()
@@ -28,14 +29,14 @@ class AuthorizationController extends Controller
 
     public function create(Request $request)
     {
-        Gate::authorize('manage-authorizations');
+        Gate::authorize('edit-authorizations');
 
         return view('authorization.create');
     }
 
     public function store(Request $request)
     {
-        Gate::authorize('manage-authorizations');
+        Gate::authorize('edit-authorizations');
 
         $validated = $request->validate([
             'name' => 'required',
@@ -53,7 +54,7 @@ class AuthorizationController extends Controller
 
     public function edit(Authorization $authorization)
     {
-        // Gate::authorize('manage-authorizations');
+        Gate::authorize('edit-authorizations');
 
         return view(
             'authorization.edit',
@@ -63,59 +64,48 @@ class AuthorizationController extends Controller
 
     public function update(Request $request, Authorization $authorization)
     {
-        Gate::authorize('manage-authorizations');
+        Gate::authorize('edit-authorizations');
 
         $validated = $request->validate([
             'name' => 'required',
+            'check' => 'required|array',
+            'edit-authorizations' => ''
         ]);
+
+        // dd($request);
+
+        $authorization->edit_post_types = $request->has('edit-posttypes');
+        $authorization->edit_users = $request->has('edit-users');
+        $authorization->edit_authorizations = $request->has('edit-authorizations');
+        $authorization->save();
+
+        // dd($validated);
 
         // dd($request->input('check'));
         foreach ($authorization->authorizationPosttypes as $authorizationPosttype) {
-            // dd($authorizationPosttype->id);
-            if (Arr::exists($request['check'], $authorizationPosttype->id)) {
-                $checkAuthPostType = $request['check'][$authorizationPosttype->id];
-                // if ($checkAuthPostType) {
-                // dd($checkAuthPostType);
-                if (Arr::exists($checkAuthPostType, 'read')) {
-                    // dd('exist');
-                    $authorizationPosttype->read = true;
-                } else {
-                    // dd('exist');
-                    $authorizationPosttype->read = false;
+
+            if ($request->has('check.' . $authorizationPosttype->id)) {
+
+                foreach (['read', 'write', 'own', 'all'] as $key) {
+                    $authorizationPosttype[$key] = $request->has('check.' . $authorizationPosttype->id . '.' . $key);
                 }
-                // dd('ok');
-                $authorizationPosttype->save();
 
-                // }
             } else {
-                // dd('not exist' .$authorizationPosttype->id );
+                $authorizationPosttype->read = false;
+                $authorizationPosttype->write = false;
+                $authorizationPosttype->own = false;
+                $authorizationPosttype->all = false;
             }
-            if (collect($request->input('check'))->contains($authorizationPosttype->id)) {
-                dd('ok');
-            }
+
+            $authorizationPosttype->save();
         }
-
-
-        // foreach ($request['check'] as $postTypeId => $postTypeAuthorizations) {
-        //     $opt = PostType::find($postTypeId)->authorizationsPosttypes->where('authorization_id', $authorization->id)->first();
-
-        //     $opt->read = false;
-        //     $opt->write = false;
-        //     $opt->own = false;
-        //     $opt->all = false;
-
-        //     foreach ($postTypeAuthorizations as $action => $value) {
-        //         $opt[$action] = true;
-        //     }
-        //     $opt->save();
-        // }
 
         return back()->with('status', 'Saved');;
     }
 
     public function destroy(Request $request, Authorization $authorization)
     {
-        Gate::authorize('manage-posttypes');
+        Gate::authorize('edit-authorizations');
 
         $authorization->delete();
 

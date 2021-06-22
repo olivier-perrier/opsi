@@ -45,12 +45,12 @@
                     <ul class="px-6 py-3">
 
 
-                        @foreach ($autorization->postTypes as $postType)
+                        @foreach ($autorization as $authPT)
 
                             <li class="rounded hover:bg-gray-200">
                                 <a class="nav-link active p-2 block w-full" aria-current="page"
-                                    href="/posttypes/{{ $postType->id }}/posts">
-                                    {{ $postType->name }}
+                                    href="/posttypes/{{ $authPT->postType->id }}/posts">
+                                    {{ $authPT->postType->name }}
                                 </a>
                             </li>
 

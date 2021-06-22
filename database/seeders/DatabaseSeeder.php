@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
 
         $organization = Organization::factory()->create(['name' => 'Company']);
 
-        $auth = Authorization::factory()->create(['name' => 'AuthAll']);
+        $auth = Authorization::factory()->create(['name' => 'AuthAll', 'edit_authorizations' => true]);
 
 
         // User

@@ -8,6 +8,7 @@ use App\Models\DataList;
 use App\Models\DataValue;
 use App\Models\DataRelationship;
 use App\Models\Field;
+use App\Models\Organization;
 use App\Models\PostType;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        Gate::authorize('manage-post', $post);
+        Gate::authorize('view-post', $post);
 
         return view('post.show', [
             'post' => $post
@@ -54,15 +55,18 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+
+        // dd($request->query('posttypeId'));
+
         $validated = $request->validate([
-            'posttype' => 'required',
+            'posttype' => '',
             'name' => 'required',
             'order' => 'integer',
         ]);
 
         // Crée le nouveau post sur le PostType
         $post = Post::create([
-            'post_type_id' => $validated['posttype'],
+            'post_type_id' => $request->query('posttypeId'),
             'name' => $validated['name'],
             'user_id' => Auth::id(),
         ]);
@@ -98,9 +102,18 @@ class PostController extends Controller
         return redirect('posts/' . $post->id . '/edit');
     }
 
+    public function edit(Request $request, Post $post)
+    {
+        Gate::authorize('edit-post', $post);
+
+        $posts = Auth::user()->organization->posts();
+
+        return view('post.edit', ['post' => $post, 'posts' => $posts, 'fields' => Field::all()]);
+    }
+
     public function update(Request $request, Post $post)
     {
-        Gate::authorize('manage-post', $post);
+        Gate::authorize('edit-post', $post);
 
         $validated = $request->validate([
             'name' => '',
@@ -155,12 +168,6 @@ class PostController extends Controller
         return back();
     }
 
-    public function edit(Request $request, Post $post)
-    {
-        Gate::authorize('manage-post', $post);
-
-        return view('post.edit', ['post' => $post, 'posts' => Post::all(), 'fields' => Field::all()]);
-    }
 
     public function destroy(Post $post)
     {

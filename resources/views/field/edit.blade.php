@@ -16,45 +16,66 @@
             @method('PUT')
             @csrf
 
-            <div class="mb-2">
+            <div class="mt-2">
                 <label for="inputName" class="block font-bold">Name</label>
                 <input type="text" id="inputName" class="mt-1 block w-full rounded-lg" name="name"
                     value="{{ $field->name }}">
             </div>
 
-            <div class="">
+            <div class="mt-2">
 
                 <label for="inputType" class="block font-bold">Type</label>
                 <select name="type" id="inputType" class="w-full rounded-lg">
-                    <option value="Value" {{ @old('type') == 'Value' ? 'selected' : '' }}>Value</option>
-                    <option value="List" {{ @old('type') == 'List' ? 'selected' : '' }}>List</option>
-                    <option value="Tab" {{ @old('type') == 'Tab' ? 'selected' : '' }}>Tab</option>
-                    <option value="Relationship" {{ @old('type') == 'Relationship' ? 'selected' : '' }}>Relationship
+                    <option value="Value" {{ $field->type == 'Value' ? 'selected' : '' }}>Value</option>
+                    <option value="List" {{ $field->type == 'List' ? 'selected' : '' }}>List</option>
+                    <option value="Tab" {{ $field->type == 'Tab' ? 'selected' : '' }}>Tab</option>
+                    <option value="Relationship" {{ $field->type == 'Relationship' ? 'selected' : '' }}>Relationship
                     </option>
                 </select>
             </div>
 
+
+
+
+            @if ($field->type == 'Value')
+                This field is a value. There is nothing more to do here. <br>
+                FieldValue related <br>
+                {{ $field->fieldValue }}
+
+            @elseif($field->type == 'List')
+                This field is a list. There is nothing more to do here. <br>
+                FieldList related <br>
+                {{ $field->fieldList }}
+
+            @elseif($field->type == 'Relationship')
+                This field is a Relationship. You can specify the Post type of the relation. <br>
+                FieldRelationship related <br>
+                {{ $field->fieldRelationship }}
+
+                <div class="mt-2">
+
+                    <label for="posttype" class="block font-bold">Post type</label>
+                        <select name="posttype" id="posttype" class="w-full rounded-lg">
+                            <option value="" {{ $field->type == 'Value' ? 'selected' : '' }}></option>
+                            @foreach ($posttypes as $posttype)
+                                <option value="{{ $posttype->id }}"
+                                    {{ $posttype->id == $field->fieldRelationship->post_type_id ? 'selected' : '' }}>
+                                    {{ $posttype->name }}</option>
+                            @endforeach
+                            </option>
+                        </select>
+                </div>
+
+            @else
+                Other {{ $field->type }}
+            @endif
+
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+
             <button type="submit" class="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg">Save</button>
         </form>
-
-
-        @if ($field->type == 'Value')
-            This field is a value. There is nothing more to do here. <br>
-            FieldValue related <br>
-            {{ $field->fieldValue }}
-
-        @elseif($field->type == 'List')
-            This field is a list. There is nothing more to do here. <br>
-            FieldList related <br>
-            {{ $field->fieldList }}
-
-        @else
-            Other {{ $field->type }}
-        @endif
-
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
 
     </div>
 

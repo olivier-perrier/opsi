@@ -69,7 +69,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
         * L'administrateur se connecte et va créer les utilisateurs de l'application -> done
         * L'administrateur crée le type de données qu'il va avoir besoin d'utiliser -> done
-        * L'administrateur associe les autorisations à ces utilisateurs et les données qu'il a crée
+        * L'administrateur associe les autorisations à ces utilisateurs et les données qu'il a crée -> done
         * L'administrateur test avec un de ces collegue
         * Les utilisateurs créer des données
         * Exploitation de l'application dans des cas réels

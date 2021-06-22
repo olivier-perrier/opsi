@@ -17,7 +17,7 @@
         <form method="POST" action="/posts?posttypeId={{ $posttypeId }}">
             @csrf
 
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="posttype" class="block font-medium">Post type</label>
 
                 <select name="posttype" id="posttype" class="mt-1 block w-full rounded-lg">
@@ -27,7 +27,7 @@
                         </option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
 
             <div class="mb-3">
                 <label for="name" class="block font-medium">Name</label>
@@ -43,8 +43,10 @@
                 <li>{{ $error }}</li>
             @endforeach
 
-            <button type="submit"
-                class="py-2 px-4 bg-green-500 text-white font-semibold shadow-md rounded-lg">Submit</button>
+            <div class="flex justify-end">
+                <button type="submit"
+                    class="py-2 px-4 bg-green-500 text-white font-semibold shadow-md rounded-lg">Submit</button>
+            </div>
         </form>
 
     </div>

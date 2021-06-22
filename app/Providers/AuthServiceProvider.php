@@ -29,10 +29,31 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::define('view-post', function (User $user, Post $post) {
+            return
+                // Own Post
+                $post->user->id == $user->id ||
+                // Or
+                $user->authPT($post->postType)->read;
+                // $user->authorization->authorizationPosttypes->where('post_type_id', $post->postType->id)->first()->read;
+            // || $user->email == 'olivier.perrier.j@gmail.com';
+        });
+
+        Gate::define('edit-post', function (User $user, Post $post) {
+
+            return
+                // Own Post
+                $post->user->id == $user->id ||
+                // Or
+                $user->authPT($post->postType)->write;
+            // || $user->email == 'olivier.perrier.j@gmail.com';
+        });
+
         Gate::define('manage-post', function (User $user, Post $post) {
             return $user->authorized_posttypes()->contains('name', $post->postType->name)
                 || $user->email == 'olivier.perrier.j@gmail.com';;
         });
+
 
         Gate::define('manage-posttype', function (User $user, PostType $postType) {
             return $user->authorized_posttypes()->contains('name', $postType->name)
@@ -44,14 +65,26 @@ class AuthServiceProvider extends ServiceProvider
                 || $user->email == 'olivier.perrier.j@gmail.com';
         });
 
-        Gate::define('manage-authorizations', function (User $user) {
-            return $user->authorized_posttypes()->contains('name', 'Authorization')
-                || $user->email == 'olivier.perrier.j@gmail.com';
-        });
-
         Gate::define('manage-posttypes', function (User $user) {
             return $user->authorized_posttypes()->contains('name', 'Posttype')
                 || $user->email == 'olivier.perrier.j@gmail.com';
+        });
+
+        // Specifique
+        Gate::define('edit-posttypes', function (User $user) {
+            // dd($user->authorization->edit_authorizations);
+            return $user->authorization->edit_post_types == true;
+            // || $user->email == 'olivier.perrier.j@gmail.com';
+        });
+        Gate::define('edit-users', function (User $user) {
+            // dd($user->authorization->edit_authorizations);
+            return $user->authorization->edit_users == true;
+            // || $user->email == 'olivier.perrier.j@gmail.com';
+        });
+        Gate::define('edit-authorizations', function (User $user) {
+            // dd($user->authorization->edit_authorizations);
+            return $user->authorization->edit_authorizations == true;
+            // || $user->email == 'olivier.perrier.j@gmail.com';
         });
     }
 }

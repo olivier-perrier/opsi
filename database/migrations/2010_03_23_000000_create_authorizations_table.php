@@ -16,6 +16,10 @@ class CreateAuthorizationsTable extends Migration
         Schema::create('authorizations', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->foreignId("organization_id")->constrained();
+            $table->boolean("edit_post_types")->nullable();
+            $table->boolean("edit_users")->nullable();
+            $table->boolean("edit_authorizations")->nullable();
             $table->timestamps();
         });
     }

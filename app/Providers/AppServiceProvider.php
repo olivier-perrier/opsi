@@ -31,7 +31,8 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.app', function ($view) {
 
-            $view->with('autorization', auth()->user()->authorization);
+            // dd(Auth::user()->authorization->authorizationPosttypes->where('read', true));
+            $view->with('autorization', Auth::user()->authorization->authorizationPosttypes->where('read', true));
 
         });
     }

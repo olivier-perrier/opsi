@@ -48,12 +48,21 @@
 
                         <tr class="hover:bg-gray-50">
                             <td scope="row" class="px-6 py-4">
-                                <a href="/posts/{{ $post->id }}/edit" class="block text-blue-500">{{ $post->id }}</a>
+                                <a href="/posts/{{ $post->id }}/edit"
+                                    class="block text-blue-500">{{ $post->id }}</a>
                             </td>
 
                             {{-- Nanme --}}
                             <td scope="row" class="px-6 py-4">
-                                <a href="/posts/{{ $post->id }}/edit" class="block text-blue-500">{{ $post->name }}</a>
+
+                                @can('edit-post', $post)
+                                    <a href="/posts/{{ $post->id }}/edit"
+                                        class="block text-blue-500">{{ $post->name }}</a>
+                                @else
+                                    <a href="/posts/{{ $post->id }}" class="block text-blue-500">{{ $post->id }}</a>
+
+                                @endcan
+
                             </td>
 
                             {{-- Type --}}
@@ -99,9 +108,15 @@
                                         type="submit">Delete</button>
                                 </form>
                             </td>
+                            {{-- Edit / View --}}
                             <td class="text-right pr-5 py-4">
-                                <a href="/posts/{{ $post->id }}/edit"
-                                    class="font-bold text-indigo-600 hover:text-indigo-900">Edit</a>
+                                @can('edit-post', $post)
+                                    <a href="/posts/{{ $post->id }}/edit"
+                                        class="font-bold text-indigo-600 hover:text-indigo-900">Edit</a>
+                                @elsecan('view-post', $post)
+                                    <a href="/posts/{{ $post->id }}"
+                                        class="font-bold text-indigo-600 align-right hover:text-indigo-900">View</a>
+                                @endcan
                             </td>
                         </tr>
 
@@ -109,7 +124,7 @@
 
                 </tbody>
             </table>
-        
+
         </div>
 
     </div>

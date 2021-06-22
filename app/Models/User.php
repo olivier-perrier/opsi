@@ -62,4 +62,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Organization::class);
     }
+
+    public function authPT(PostType $postType)
+    {
+        return $this->authorization->authorizationPosttypes->where('post_type_id', $postType->id)->first();
+    }
 }

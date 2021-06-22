@@ -38,12 +38,14 @@
 
                         <span class="font-bold">{{ $data->field->name }} : </span>
 
-                        @foreach ($data->dataList->dataValues as $dataValue)
-                            <span>
-                                {{ $dataValue->value }}
-                            </span>
+                        <ul class="p-2">
+                            @foreach ($data->dataList->dataValues as $dataValue)
+                                <li>
+                                    {{ $dataValue->value }}
+                                </li>
 
-                        @endforeach
+                            @endforeach
+                        </ul>
 
                     @endif
 
@@ -61,8 +63,8 @@
                 <ul>
                     @foreach ($post->relationships as $relationship)
                         <li>
-                            <a href="/posts/{{$relationship->data->post->id}}" class="mx-2 text-blue-500">
-                                {{ $relationship->data->post->postType->name }} - 
+                            <a href="/posts/{{ $relationship->data->post->id }}" class="mx-2 text-blue-500">
+                                {{ $relationship->data->post->postType->name }} -
                                 {{ $relationship->data->post->name }}
                             </a>
                         </li>

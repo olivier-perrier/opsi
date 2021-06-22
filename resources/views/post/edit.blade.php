@@ -71,9 +71,9 @@
 
                             @if ($data->dataList->dataValues)
 
-                                <ul class="p-2 block w-full border border-gray-300 rounded">
+                                <ul class="p-2 list-disc list-inside w-full border border-gray-300 rounded">
                                     @foreach ($data->dataList->dataValues as $dataValue)
-                                        <li class="inline border-gray-300">
+                                        <li class="">
                                             <span class="mr-2">{{ $dataValue->value }} </span>
                                         </li>
                                     @endforeach
@@ -88,24 +88,7 @@
                         @endif
 
 
-                    @elseif($data->field->type == 'Relationship_Field')
-
-                        <select name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
-                            class="block w-full rounded" value={{ $data->value }}>
-                            <option value="" selected></option>
-                            @foreach ($fields as $field)
-                                <option value="{{ $field->id }}"
-                                    {{ $field->id == $data->related_field_id ? 'selected' : '' }}>
-                                    {{ $field->postType->name }} -
-                                    {{ $field->name }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                        {{-- @else
-                        <input type="text" id="input{{ $data->field->name }}"
-                            class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
-                            value="{{ $data->value }}"> --}}
+              
                     @endif
 
                 </div>

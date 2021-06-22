@@ -17,6 +17,7 @@ class CreatePostTypesTable extends Migration
             $table->id();
             $table->string("name");
             $table->boolean("hidden");
+            $table->foreignId("organization_id")->constrained();
             $table->timestamps();
         });
     }

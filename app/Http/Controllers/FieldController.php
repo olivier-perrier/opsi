@@ -6,6 +6,7 @@ use App\Models\Data;
 use App\Models\PostType;
 use App\Models\Field;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FieldController extends Controller
 {
@@ -49,7 +50,7 @@ class FieldController extends Controller
             }
         } else if ($field->type == 'Relationship') {
 
-            
+
             $field->fieldRelationship()->create();
 
             // For all Posts of this Post Type, I create the Data and the Data Relationship
@@ -57,7 +58,6 @@ class FieldController extends Controller
                 $data = $post->datas()->create(['field_id' => $field->id]);
                 $data->dataRelationship()->create();
             }
-           
         } else {
             dd(($field));
         }
@@ -70,7 +70,9 @@ class FieldController extends Controller
     {
         // Gate::authorize('manage-post', $field);
 
-        return view('field.edit', ['field' => $field]);
+        $posttypes = Auth::user()->organization->postTypes;
+
+        return view('field.edit', ['field' => $field, 'posttypes' => $posttypes]);
     }
 
 
@@ -80,15 +82,19 @@ class FieldController extends Controller
             'name' => 'required',
             'type' => 'required',
             'order' => 'integer',
-
         ]);
 
         $field->update($validated);
 
         // Update the order to all datas
         foreach ($field->datas as $data) {
-            $data->order = $field->order;
+            // $data->order = $field->order;
             $data->save();
+        }
+
+        if($field->type == 'Relationship'){
+            $field->fieldRelationship->post_type_id = $request->input('posttype');
+            $field->fieldRelationship->save();
         }
 
         return back();

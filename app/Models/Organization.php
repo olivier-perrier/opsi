@@ -14,4 +14,16 @@ class Organization extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function posts()
+    {
+        return $this->users->flatMap(function($user) {
+            return $user->posts;
+        });
+    }
+
+    public function postTypes()
+    {
+        return $this->hasMany(PostType::class);
+    }
 }

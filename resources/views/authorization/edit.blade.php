@@ -22,10 +22,10 @@
                 <input type="text" name="name" class="mt-1 block w-full rounded-lg" value="{{ $authorization->name }}">
             </div>
 
-            <div class="mt-3">
-                <label for="posttypes" class="my-1 block">Post types</label>
+            <div class="mt-5">
+                <h1 class="my-3 text-xl">Post types</h1>
 
-                <table class="min-w-full">
+                <table class="table-auto min-w-full">
                     <thead>
                         <tr>
                             <th scope="col" class="mx-6 text-left">Post Type name</th>
@@ -35,12 +35,12 @@
                             <th scope="col" class="mx-6 text-left">All</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y">
 
                         @foreach ($authorization->authorizationPosttypes as $authPosttype)
 
                             <tr>
-                                <td>
+                                <td class="py-2">
                                     {{ $authPosttype->postType->name }}
                                 </td>
                                 <td>
@@ -55,7 +55,7 @@
                                 <td>
                                     <input name="check[{{ $authPosttype->id }}][own]" type="checkbox"
                                         class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                                        {{ $authPosttype->write ? 'checked' : '' }}>
+                                        {{ $authPosttype->own ? 'checked' : '' }}>
                                 <td> <input name="check[{{ $authPosttype->id }}][all]" type="checkbox"
                                         class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
                                         {{ $authPosttype->all ? 'checked' : '' }}></td>
@@ -65,19 +65,24 @@
                     </tbody>
                 </table>
 
-                <div class="grid md:grid-cols-3 gap-3">
+            </div>
 
-                    @foreach ($posttypes as $posttype)
-
-                        <div class="p-4 max-w-xs bg-white rounded-xl shadow-md">
-                            <label class="flex items-center space-x-3">
-                                <input type="checkbox" name="posttypes[{{ $posttype->id }}]"
-                                    {{ $authorization->posttypes->contains($posttype->id) ? 'checked' : '' }}
-                                    class="form-tick appearance-none h-6 w-6 border border-gray-300 rounded-lg">
-                                <span class="">{{ $posttype->name }}</span>
-                            </label>
-                        </div>
-                    @endforeach
+            <div class="mt-5">
+                <h1 class="my-3 text-xl">Specific</h1>
+                <div class="mt-2">
+                    <label for="posttypes" class="my-2 font-bold">Manage Post types</label>
+                    <input type="checkbox" name="edit-posttypes" id="edit-posttypes" class="m-2 rounded"
+                    {{ $authorization->edit_post_types ? 'checked' : '' }}>
+                </div>
+                <div class="mt-2">
+                    <label for="users" class="my-2 font-bold">Manage users</label>
+                    <input type="checkbox" name="edit-users" id="edit-authorizations" class="m-2 rounded"
+                    {{ $authorization->edit_users ? 'checked' : '' }}>
+                </div>
+                <div class="mt-2">
+                    <label for="authorizations" class="my-2 font-bold">Manage authorizations</label>
+                    <input type="checkbox" name="edit-authorizations" id="edit-authorizations" class="m-2 rounded"
+                    {{ $authorization->edit_authorizations ? 'checked' : '' }}>
                 </div>
 
             </div>
