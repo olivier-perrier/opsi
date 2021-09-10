@@ -22,7 +22,10 @@ class DatabaseSeeder extends Seeder
 
         $organization = Organization::factory()->create(['name' => 'Company']);
 
-        $auth = Authorization::factory()->create(['name' => 'AuthAll', 'edit_authorizations' => true]);
+        $auth = Authorization::factory()->create([
+            'name' => 'AuthAll', 'edit_authorizations' => true,
+            'organization_id' => $organization->id
+        ]);
 
 
         // User
@@ -36,10 +39,10 @@ class DatabaseSeeder extends Seeder
             'organization_id' => $organization->id
         ]);
 
-        $page = PostType::factory()->create(['name' => 'Page']);
-        $post = PostType::factory()->create(['name' => 'Post']);
-        $client = PostType::factory()->create(['name' => 'Client']);
-        $contrat = PostType::factory()->create(['name' => 'Contrat']);
+        $page = PostType::factory()->create(['name' => 'Page', 'organization_id' => $organization->id]);
+        $post = PostType::factory()->create(['name' => 'Post','organization_id' => $organization->id]);
+        $client = PostType::factory()->create(['name' => 'Client', 'organization_id' => $organization->id]);
+        $contrat = PostType::factory()->create(['name' => 'Contrat', 'organization_id' => $organization->id]);
 
         // PostType::factory()->create(['name' => 'User', 'hidden' => true]);
         // PostType::factory()->create(['name' => 'Authorization', 'hidden' => true]);

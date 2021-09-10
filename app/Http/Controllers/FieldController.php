@@ -30,36 +30,10 @@ class FieldController extends Controller
 
         $field = $postType->fields()->create($validated);
 
-        if ($field->type == 'Value') {
-
-            $field->fieldValue()->create();
-
-            // For all Posts of this Post Type, I create the dataValue
-            foreach ($postType->posts as $post) {
-                $data = $post->datas()->create(['field_id' => $field->id]);
-                $data->dataValue()->create();
-            }
-        } else if ($field->type == 'List') {
-
-            $field->fieldList()->create();
-
-            // For all Posts of this Post Type, I create the dataValue
-            foreach ($postType->posts as $post) {
-                $data = $post->datas()->create(['field_id' => $field->id]);
-                $data->dataList()->create();
-            }
-        } else if ($field->type == 'Relationship') {
-
-
-            $field->fieldRelationship()->create();
-
-            // For all Posts of this Post Type, I create the Data and the Data Relationship
-            foreach ($postType->posts as $post) {
-                $data = $post->datas()->create(['field_id' => $field->id]);
-                $data->dataRelationship()->create();
-            }
-        } else {
-            dd(($field));
+        if ($field->type != 'Data' && $field->type =! 'Relationship') {
+       
+            echo("Warning Field Type is not reconizer");
+            dd($field);
         }
 
 

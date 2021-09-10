@@ -9,7 +9,7 @@ class PostType extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'order', 'hidden'];
+    protected $fillable = ['name', 'order', 'hidden', 'organization_id'];
 
     protected $attributes = [
         'hidden' => false,
@@ -35,4 +35,5 @@ class PostType extends Model
     {
         return $this->hasMany(AuthorizationPosttype::class);
     }
+
 }

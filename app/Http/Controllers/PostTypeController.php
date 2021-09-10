@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuthorizationPosttype;
 use App\Models\PostType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class PostTypeController extends Controller
@@ -42,11 +44,21 @@ class PostTypeController extends Controller
             'name' => 'required',
         ]);
 
-        $posttype = PostType::create($validated);
+        $postType = PostType::create([
+            'name' => $validated['name'],
+            'organization_id' => Auth::user()->organization->id
+        ]);
+
+        foreach (Auth::user()->organization->authorizations as $authorization) {
+            AuthorizationPosttype::create([
+                'post_type_id' => $postType->id,
+                'authorization_id' => $authorization->id
+            ]);
+        }
 
         // Set the new Post type in the first Authorization of the current user
         // $request->user()->authorizations->first()->posttypes()->attach($posttype);
-        
+
         return back();
     }
 

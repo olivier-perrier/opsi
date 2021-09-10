@@ -58,7 +58,7 @@ class AuthorizationController extends Controller
 
         return view(
             'authorization.edit',
-            ['authorization' => $authorization, 'posttypes' => PostType::all()]
+            ['authorization' => $authorization, 'posttypes' => Auth::user()->organization->postType]
         );
     }
 

@@ -26,9 +26,7 @@
 
                 <label for="inputType" class="block font-bold">Type</label>
                 <select name="type" id="inputType" class="w-full rounded-lg">
-                    <option value="Value" {{ $field->type == 'Value' ? 'selected' : '' }}>Value</option>
-                    <option value="List" {{ $field->type == 'List' ? 'selected' : '' }}>List</option>
-                    <option value="Tab" {{ $field->type == 'Tab' ? 'selected' : '' }}>Tab</option>
+                    <option value="Data" {{ $field->type == 'Data' ? 'selected' : '' }}>Data</option>
                     <option value="Relationship" {{ $field->type == 'Relationship' ? 'selected' : '' }}>Relationship
                     </option>
                 </select>
@@ -37,15 +35,8 @@
 
 
 
-            @if ($field->type == 'Value')
+            @if ($field->type == 'Data')
                 This field is a value. There is nothing more to do here. <br>
-                FieldValue related <br>
-                {{ $field->fieldValue }}
-
-            @elseif($field->type == 'List')
-                This field is a list. There is nothing more to do here. <br>
-                FieldList related <br>
-                {{ $field->fieldList }}
 
             @elseif($field->type == 'Relationship')
                 This field is a Relationship. You can specify the Post type of the relation. <br>
@@ -67,7 +58,7 @@
                 </div>
 
             @else
-                Other {{ $field->type }}
+                Warning the Type of the Field is not reconized {{ $field->type }}
             @endif
 
             @foreach ($errors->all() as $error)

@@ -73,13 +73,13 @@ class AuthServiceProvider extends ServiceProvider
         // Specifique
         Gate::define('edit-posttypes', function (User $user) {
             // dd($user->authorization->edit_authorizations);
-            return $user->authorization->edit_post_types == true;
-            // || $user->email == 'olivier.perrier.j@gmail.com';
+            return $user->authorization->edit_post_types == true
+            || $user->email == 'olivier.perrier.j@gmail.com';
         });
         Gate::define('edit-users', function (User $user) {
             // dd($user->authorization->edit_authorizations);
-            return $user->authorization->edit_users == true;
-            // || $user->email == 'olivier.perrier.j@gmail.com';
+            return $user->authorization->edit_users == true
+            || $user->email == 'olivier.perrier.j@gmail.com';
         });
         Gate::define('edit-authorizations', function (User $user) {
             // dd($user->authorization->edit_authorizations);

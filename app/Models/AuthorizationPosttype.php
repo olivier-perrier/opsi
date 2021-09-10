@@ -11,7 +11,7 @@ class AuthorizationPosttype extends Model
 
     protected $table = "authorization_posttype";
 
-    protected $fillable = ['post_type_id'];
+    protected $fillable = ['post_type_id', 'authorization_id'];
 
 
     public function postType()

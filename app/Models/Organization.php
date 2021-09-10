@@ -26,4 +26,9 @@ class Organization extends Model
     {
         return $this->hasMany(PostType::class);
     }
+
+    public function authorizations()
+    {
+        return $this->hasMany(Authorization::class);
+    }
 }

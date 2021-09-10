@@ -15,6 +15,7 @@ class CreateDatasTable extends Migration
     {
         Schema::create('datas', function (Blueprint $table) {
             $table->id();
+            $table->string("value")->nullable();
             $table->foreignId("post_id")->constrained();
             $table->foreignId("field_id")->constrained();
             $table->timestamps();

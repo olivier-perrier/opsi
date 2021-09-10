@@ -36,6 +36,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -50,7 +51,7 @@ class UserController extends Controller
             // 'password' => Hash::make($request->password),
         ]);
 
-        dd($user);
+        // dd($user);
 
         // Auth::login($user = User::create([
         //     'name' => $request->name,

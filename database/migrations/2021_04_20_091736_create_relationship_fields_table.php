@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDataListsTable extends Migration
+class CreateRelationshipFieldsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateDataListsTable extends Migration
      */
     public function up()
     {
-        Schema::create('data_lists', function (Blueprint $table) {
+        Schema::create('relationship_fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("data_id")->constrained('datas')->onDelete('cascade');
+            $table->foreignId("field_id")->constrained();
+            $table->foreignId("data_id");
+            
+            $table->foreign("data_id")->references('id')->on("datas")->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateDataListsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('data_lists');
+        Schema::dropIfExists('relationship_fields');
     }
 }

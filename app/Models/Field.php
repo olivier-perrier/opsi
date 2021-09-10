@@ -31,18 +31,4 @@ class Field extends Model
         return $this->belongsTo(PostType::class);
     }
 
-    public function fieldValue()
-    {
-        return $this->hasOne(FieldValue::class);
-    }
-
-    public function fieldList()
-    {
-        return $this->hasOne(FieldList::class);
-    }
-
-    public function fieldRelationship()
-    {
-        return $this->hasOne(FieldRelationship::class);
-    }
 }
