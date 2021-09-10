@@ -34,9 +34,9 @@ class AuthServiceProvider extends ServiceProvider
                 // Own Post
                 $post->user->id == $user->id ||
                 // Or
-                $user->authPT($post->postType)->read;
+                $user->authPT($post->postType)->read
                 // $user->authorization->authorizationPosttypes->where('post_type_id', $post->postType->id)->first()->read;
-            // || $user->email == 'olivier.perrier.j@gmail.com';
+            || $user->email == 'olivier.perrier.j@gmail.com';
         });
 
         Gate::define('edit-post', function (User $user, Post $post) {
@@ -45,8 +45,8 @@ class AuthServiceProvider extends ServiceProvider
                 // Own Post
                 $post->user->id == $user->id ||
                 // Or
-                $user->authPT($post->postType)->write;
-            // || $user->email == 'olivier.perrier.j@gmail.com';
+                $user->authPT($post->postType)->write
+            || $user->email == 'olivier.perrier.j@gmail.com';
         });
 
         Gate::define('manage-post', function (User $user, Post $post) {
@@ -83,8 +83,8 @@ class AuthServiceProvider extends ServiceProvider
         });
         Gate::define('edit-authorizations', function (User $user) {
             // dd($user->authorization->edit_authorizations);
-            return $user->authorization->edit_authorizations == true;
-            // || $user->email == 'olivier.perrier.j@gmail.com';
+            return $user->authorization->edit_authorizations == true
+             || $user->email == 'olivier.perrier.j@gmail.com';
         });
     }
 }

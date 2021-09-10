@@ -23,29 +23,18 @@
 
                 <div class="mt-3 block p-5 border rounded-lg bg-white shadow-sm">
 
-                    @if ($data->field->type == 'Relationship')
+                    @if ($data->field->type == 'Data')
                         <span class="font-bold">{{ $data->field->name }} : </span>
-                        <a href="/posts/{{ $data->dataRelationship->post_id }}" class="text-blue-500 underline">
-                            @if ($data->dataRelationship->post)
-                                {{ $data->dataRelationship->post->name }}
+                        {{ $data->value }}
+
+                    @elseif ($data->field->type == 'Relationship')
+                        <span class="font-bold">{{ $data->field->name }} : </span>
+                        <a href="/posts/{{ $data->post_id }}" class="text-blue-500 underline">
+                            @if ($data->post)
+                                {{ $data->post->name }}
                             @endif
                         </a>
-                    @elseif ($data->field->type == 'Value')
-                        <span class="font-bold">{{ $data->field->name }} : </span>
-                        {{ $data->dataValue->value }}
 
-                    @elseif ($data->field->type == 'List')
-
-                        <span class="font-bold">{{ $data->field->name }} : </span>
-
-                        <ul class="p-2">
-                            @foreach ($data->dataList->dataValues as $dataValue)
-                                <li>
-                                    {{ $dataValue->value }}
-                                </li>
-
-                            @endforeach
-                        </ul>
 
                     @endif
 
@@ -63,9 +52,9 @@
                 <ul>
                     @foreach ($post->relationships as $relationship)
                         <li>
-                            <a href="/posts/{{ $relationship->data->post->id }}" class="mx-2 text-blue-500">
-                                {{ $relationship->data->post->postType->name }} -
-                                {{ $relationship->data->post->name }}
+                            <a href="/posts/{{ $relationship->post->id }}" class="mx-2 text-blue-500">
+                                {{ $relationship->post->postType->name }} -
+                                {{ $relationship->post->name }}
                             </a>
                         </li>
                     @endforeach

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Data;
 use App\Models\DataList;
-use App\Models\DataValue;
 use App\Models\DataRelationship;
 use App\Models\Field;
 use App\Models\Organization;
@@ -81,22 +80,6 @@ class PostController extends Controller
             $data->post_id = $post->id;
             $data->field_id = $field->id;
             $data->save();
-
-            if ($field->type == "Value") {
-                $dataValue = new DataValue();
-                $dataValue->data_id = $data->id;
-                $dataValue->save();
-            } else if ($field->type == "List") {
-                $list = new DataList();
-                $list->data_id = $data->id;
-                $list->save();
-            } else if ($field->type == "Relationship") {
-                $list = new DataRelationship();
-                $list->data_id = $data->id;
-                $list->save();
-            } else {
-                dd("error PostControler store");
-            }
         }
 
         return redirect('posts/' . $post->id . '/edit');
@@ -131,36 +114,19 @@ class PostController extends Controller
 
                 $data = Data::find($key);
 
-                // dd($data);
+                
+                if ($data->field->type == 'Data') {
+                    
+                    $data->update(['value' => $dataValue]);
+                    // dd($data);
+                    
+                } else if ($data->field->type == 'Relationship') {
+                    
+                    $data->update(['post_id' => $dataValue]);
 
-                if ($data->field->type == 'Relationship') {
-
-                    $data->dataRelationship()->update(['post_id' => $dataValue]);
                 } else if ($data->field->type == 'Relationship_Field') {
                     // dd($data);
                     $data->update(['related_field_id' => $dataValue]);
-                } else if ($data->field->type == 'List') {
-
-                    foreach ($dataValue as $dataValueKey => $dataValueItem) {
-
-                        $dataValueExisting = DataValue::find($dataValueKey);
-
-                        if ($dataValueExisting) {
-                            $dataValueExisting->update(['value' => $dataValueItem]);
-                            // dd($dataValueExisting);
-
-                        } else {
-                            if ($dataValueItem != "") {
-
-                                $newDataValue = DataValue::create([
-                                    'value' =>  $dataValueItem,
-                                ]);
-                                $data->dataList->dataValues()->save($newDataValue);
-                            }
-                        }
-                    }
-                } else if ($data->field->type == 'Value') {
-                    $data->dataValue()->update(['value' => $dataValue]);
                 }
             }
         }

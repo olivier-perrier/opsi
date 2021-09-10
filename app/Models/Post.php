@@ -40,12 +40,13 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(User::class);
     }
 
     public function find($postId)
     {
-        return Post::all()->where('id', $postId)->first();
+        return Post::find($postId);
+        // return Post::all()->where('id', $postId)->first();
     }
 
     public function getDataForFieldName($fieldName)
@@ -59,6 +60,6 @@ class Post extends Model
 
     public function relationships()
     {
-        return $this->hasMany(DataRelationship::class);
+        return $this->hasMany(Data::class);
     }
 }

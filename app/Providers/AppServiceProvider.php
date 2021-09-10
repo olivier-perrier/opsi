@@ -34,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
             // dd(Auth::user()->authorization->authorizationPosttypes->where('read', true));
             $view->with('autorization', Auth::user()->authorization->authorizationPosttypes->where('read', true));
 
+            $view->with('postTypes', Auth::user()->organization->postTypes);
+
         });
     }
 }

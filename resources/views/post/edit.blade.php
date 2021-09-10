@@ -27,91 +27,62 @@
             {{-- New custom --}}
 
             @foreach ($post->datas as $data)
-
                 <div class="mb-3">
 
                     {{-- Print label --}}
                     <label for="input{{ $data->field->name }}" class="block mb-1">
                         {{ $data->field->name }}
-                        @if ($data->field->type == 'List')
-                            ({{ count($data->dataList->dataValues) }})
-                        @endif
                     </label>
 
-                    @if ($data->field->type == 'Relationship')
+                    @if ($data->field->type == 'Data')
+                        <input type="text" id="input{{ $data->field->name }}" class="block w-full border-gray-300 rounded"
+                            name="datas[{{ $data->id }}]" value="{{ $data->value }}">
 
+                    @elseif ($data->field->type == 'Relationship')
                         <select name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
                             class="block w-full rounded" value={{ $data->value }}>
                             <option value="" selected></option>
                             @foreach ($posts as $cur_post)
                                 <option value="{{ $cur_post->id }}"
-                                    {{ $cur_post->id == $data->dataRelationship->post_id ? 'selected' : '' }}>
+                                    {{ $cur_post->id == $data->post_id ? 'selected' : '' }}>
                                     {{ $cur_post->postType->name }} - {{ $cur_post->name }}
                                 </option>
                             @endforeach
                         </select>
 
                     @elseif($data->field->type == 'Textarea')
-                        <textarea name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}" class="w-full"
-                            cols="30" rows="10">{{ $data->value }} </textarea>
+                        <textarea name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
+                            class="w-full" cols="30" rows="10">{{ $data->value }} </textarea>
 
-                    @elseif($data->field->type == 'Value')
-                        <input type="text" id="input{{ $data->field->name }}"
-                            class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
-                            value="{{ $data->dataValue->value }}">
 
                     @elseif($data->field->type == 'Number')
                         <input type="number" id="input{{ $data->field->name }}"
                             class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
                             value="{{ $data->value }}">
 
-                    @elseif($data->field->type == 'List')
-
-                        @if ($data->dataList)
-
-                            @if ($data->dataList->dataValues)
-
-                                <ul class="p-2 list-disc list-inside w-full border border-gray-300 rounded">
-                                    @foreach ($data->dataList->dataValues as $dataValue)
-                                        <li class="">
-                                            <span class="mr-2">{{ $dataValue->value }} </span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-
-                                <a href="/dataList/{{ $data->dataList->id }}/edit"
-                                    class="my-2 block font-bold text-indigo-600 hover:text-indigo-900">Edit</a>
-
-
-                            @endif
-
-                        @endif
-
-
-              
                     @endif
 
                 </div>
-
-
-            @endforeach
-
-
-            <button type="submit"
+                
+                
+                @endforeach
+                
+                
+                <button type="submit"
                 class="py-2 px-4 bg-green-500 text-white font-semibold shadow-md rounded-lg">Submit</button>
-
-        </form>
-
-        {{-- Relationships --}}
-        @if (count($post->relationships))
+                
+            </form>
+            
+            {{-- Relationships --}}
+            @if (count($post->relationships))
             <div class="mt-3">
                 <label>Relationships</label>
                 <ul>
                     @foreach ($post->relationships as $relationship)
                         <li>
-                            <a href="/posts/{{ $relationship->data->post->id }}" class="mx-2 text-blue-500">
-                                {{ $relationship->data->post->postType->name }} -
-                                {{ $relationship->data->post->name }}
+                            <a href="/posts/{{ $relationship->post->id }}" class="mx-2 text-blue-500">
+                                {{ $relationship->post->postType->name }} -
+                                {{ $relationship->post->name }}
                             </a>
                         </li>
                     @endforeach

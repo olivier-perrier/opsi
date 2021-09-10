@@ -22,7 +22,7 @@ class FieldController extends Controller
 
         $validated = $request->validate([
             'name' => 'required',
-            'type' => 'required',
+            'type' => 'required|in:Data,Relationship',
             'order' => 'integer',
         ]);
 
@@ -30,12 +30,11 @@ class FieldController extends Controller
 
         $field = $postType->fields()->create($validated);
 
-        if ($field->type != 'Data' && $field->type =! 'Relationship') {
-       
-            echo("Warning Field Type is not reconizer");
-            dd($field);
+        // Create the datas on the Posts for the new Field
+        foreach ($postType->posts as $post) {
+            $post->datas()->create(['field_id' => $field->id]);
+            // dd($post->datas);
         }
-
 
         return back();
     }
@@ -66,7 +65,7 @@ class FieldController extends Controller
             $data->save();
         }
 
-        if($field->type == 'Relationship'){
+        if ($field->type == 'Relationship') {
             $field->fieldRelationship->post_type_id = $request->input('posttype');
             $field->fieldRelationship->save();
         }
