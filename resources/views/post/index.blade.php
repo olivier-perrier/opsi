@@ -66,7 +66,6 @@
                             </td>
 
                             {{-- Type --}}
-                            {{-- Only shown if we are in the all post view with no predined posttype --}}
                             @empty($posttype)
                                 <td class="px-6 py-4">{{ $post->postType->name }}</td>
                             @endempty
@@ -76,24 +75,17 @@
                             @isset($posttype)
                                 @foreach ($post->datas as $key => $data)
                                     <td class="px-6 py-4">
+                                        {{-- {{$data->field->type}} --}}
                                         @if ($data->field->type == 'Relationship')
-                                            @isset($data->relatedPost)
-                                                <a href="/posts/{{ $data->relationship_id }}/edit">
-                                                    @if ($data->relatedPost->getDataForFieldName('Name'))
-                                                        {{ $data->relatedPost->getDataForFieldName('Name')->value }}
-                                                    @else
-                                                        -
-                                                    @endif
-                                                </a>
-                                            @endisset
-                                        @else
-                                            @if ($key == 0)
-                                                <a href="/posts/{{ $post->id }}/edit" class="text-blue-500">
-                                                    {{ $data->value }}
-                                                </a>
+                                            @if ($data->relatedPost)
+                                                <a href="/posts/{{ $data->relationship_id }}/edit"
+                                                    class="text-blue-500">
+                                                    {{ $data->relatedPost->name }}</a>
                                             @else
-                                                {{ $data->value }}
+                                                -
                                             @endif
+                                        @else
+                                            {{ $data->value }}
                                         @endif
                                     </td>
                                 @endforeach

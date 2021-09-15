@@ -60,6 +60,12 @@ class Post extends Model
 
     public function relationships()
     {
-        return $this->hasMany(Data::class);
+        return $this->hasMany(Data::class, "relationship_id", "id");
+    }
+
+    public function fields()
+    {
+        // return $this->postType->fields();
+        // return $this->postType(Field::class, postType::class);
     }
 }

@@ -44,7 +44,7 @@
                             <option value="" selected></option>
                             @foreach ($posts as $cur_post)
                                 <option value="{{ $cur_post->id }}"
-                                    {{ $cur_post->id == $data->post_id ? 'selected' : '' }}>
+                                    {{ $cur_post->id == $data->relationship_id ? 'selected' : '' }}>
                                     {{ $cur_post->postType->name }} - {{ $cur_post->name }}
                                 </option>
                             @endforeach
@@ -80,7 +80,7 @@
                 <ul>
                     @foreach ($post->relationships as $relationship)
                         <li>
-                            <a href="/posts/{{ $relationship->post->id }}" class="mx-2 text-blue-500">
+                            <a href="/posts/{{ $relationship->post->id }}/edit" class="mx-2 text-blue-500">
                                 {{ $relationship->post->postType->name }} -
                                 {{ $relationship->post->name }}
                             </a>

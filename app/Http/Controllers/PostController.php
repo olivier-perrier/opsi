@@ -122,7 +122,8 @@ class PostController extends Controller
                     
                 } else if ($data->field->type == 'Relationship') {
                     
-                    $data->update(['post_id' => $dataValue]);
+                    // dd($dataValue);
+                    $data->update(['relationship_id' => $dataValue]);
 
                 } else if ($data->field->type == 'Relationship_Field') {
                     // dd($data);

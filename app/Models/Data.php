@@ -11,7 +11,7 @@ class Data extends Model
 
     protected $table ='datas';
 
-    protected $fillable = ['value', 'post_id', 'field_id', 'order'];
+    protected $fillable = ['value', 'relationship_id', 'post_id', 'field_id', 'order'];
 
     protected $casts = [
         // 'value_json' => 'array',
