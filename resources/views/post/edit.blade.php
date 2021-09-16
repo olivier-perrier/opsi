@@ -24,6 +24,23 @@
                     value="{{ $post->name }}">
             </div>
 
+            {{-- Parent --}}
+            <div class="mb-6">
+                <label for="name" class="block mb-1">Parent</label>
+
+                <select name="parent_id" id="parent_id"
+                    class="block w-full rounded" value={{ $post->parent_id }}>
+                    <option value="" selected></option>
+                    @foreach ($posts as $cur_post)
+                        <option value="{{ $cur_post->id }}"
+                            {{ $cur_post->id == $post->parent_id ? 'selected' : '' }}>
+                            {{ $cur_post->postType->name }} - {{ $cur_post->name }}
+                        </option>
+                    @endforeach
+                </select>
+               
+            </div>
+
             {{-- New custom --}}
 
             @foreach ($post->datas as $data)

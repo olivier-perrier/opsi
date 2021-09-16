@@ -29,51 +29,78 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
-
         $schedule->call(function () {
-            // dd('starting...');
-            echo 'starting\n';
+
+            echo 'starting ';
+
+            // Sur quel Post Type creer les données
+            $postTypeId = 2;
+
+            // Sur quel user créer les données
+            $userId = 1;
+
+            // Sur quel Field créer les données
+            $fieldId = 2;
+
+            $urlLogin = "https://go.eu1.cloud.cobundu.com/rest/v2/login";
+            $responseLogin = Http::post($urlLogin, [
+                "password" => 'iconics2021',
+                "username" => 'bouygues.microsoft.iconics'
+            ]);
+
+            $accessToken = $responseLogin->json()['accessToken'];
+            // echo $responseLogin->json()['accessToken'] . "\n";
 
 
-            // Todo create a specific WS user et find it here
-            $wsUser = User::first();
+            $url = "https://go.eu1.cloud.cobundu.com/rest/v2/sensoring/devices";
+            $response = Http::withToken($accessToken)->get($url);
+            // echo 'starting\n';
 
-            $webServices = PostType::where('name', 'Webservice')->first()->posts()->get();
-            echo 'webServices = ' . $webServices . "\n";
+            echo count($response->json()) . "\n";
 
-            foreach ($webServices as $webService) {
+            foreach ($response->json() as $key => $APIsensor) {
 
+                $post = Post::where('name', $APIsensor['name'])->where('post_type_id', $postTypeId)->where('user_id', $userId)->firstOr(function () use ($APIsensor, $userId, $fieldId) {
 
-                $url = $webService->getDataForFieldName('Url')->value;
-                echo 'url = ' . $url . "\n";
+                    echo 'firstOr ';
 
-                $fieldOrigin = $webService->getDataForFieldName('FieldOrigin')->value;
-                echo  '$fieldOrigin = ' . $fieldOrigin . "\n";
+                    // $postCreated = Post::firstOrCreate(['name' => $APIsensor['name'], 'post_type_id' => 2, 'user_id' => 1]);
+                    $postCreated = Post::create(['name' => $APIsensor['name'], 'post_type_id' => 2, 'user_id' => $userId]);
 
+                    foreach ($postCreated->postType->fields as $key => $field) {
+                        echo 'createData ';
+                        Data::create(['field_id' => $field->id, 'post_id' => $postCreated->id]);
+                    }
 
-                $FieldDestination = $webService->getDataForFieldName('FieldDestination')->relatedField;
-                echo  '$FieldDestination = ' . $FieldDestination . "\n";
+                    echo 'endFirstOr ';
 
-                $posttype = $FieldDestination->posttype;
-                echo  '$posttype = ' . $posttype . "\n";
+                    return $postCreated;
 
+                });
 
-                $response = Http::get($url);
+                /* upate some values */
+                // Data::updateOrCreate(['field_id' => $fieldId, 'post_id' => $postCreated->id], ['value' => $APIsensor['locationId']]);
 
-                echo '$response->json[\'' . $fieldOrigin . '\'] = ' . $response->json()[$fieldOrigin] . "\n";
+                echo $post->id . " ";
 
-                $postCreated = Post::create(['name' => 'callws', 'posttype_id' => $posttype->id, 'user_id' => $wsUser->id]);
+                /* update Occupancy value */
+                $url = "https://go.eu1.cloud.cobundu.com/rest/v2/sensoring/sensorvalues?devices=" . $APIsensor['id'] . "&from=latest";
+                $responseSensorValue = Http::withToken($accessToken)->get($url);
 
-                $dataCreated = Data::create(['field_id' => $FieldDestination->id, 'post_id' => $postCreated->id, 'value' => $response->json()['title']]);
+                if (count($responseSensorValue->json())) {
 
+                    $sensorValue = $responseSensorValue->json()[0]['value'];
 
-                echo 'createdPost = ' . $postCreated;
-                // dd($response->json());
-                // echo 'ws - ' . $webService;
+                    // echo $sensorValue;
+                    Data::updateOrCreate(['field_id' => 1, 'post_id' => $post->id], ['value' => $sensorValue]);
+
+                    echo "updated ";
+                }
+
             }
 
-            // echo 'all ws - ' . $webServices;
+
+            echo 'finished ';
         })->everyMinute();
     }
 
