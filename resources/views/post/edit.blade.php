@@ -28,17 +28,15 @@
             <div class="mb-6">
                 <label for="name" class="block mb-1">Parent</label>
 
-                <select name="parent_id" id="parent_id"
-                    class="block w-full rounded" value={{ $post->parent_id }}>
+                <select name="parent_id" id="parent_id" class="block w-full rounded" value={{ $post->parent_id }}>
                     <option value="" selected></option>
                     @foreach ($posts as $cur_post)
-                        <option value="{{ $cur_post->id }}"
-                            {{ $cur_post->id == $post->parent_id ? 'selected' : '' }}>
+                        <option value="{{ $cur_post->id }}" {{ $cur_post->id == $post->parent_id ? 'selected' : '' }}>
                             {{ $cur_post->postType->name }} - {{ $cur_post->name }}
                         </option>
                     @endforeach
                 </select>
-               
+
             </div>
 
             {{-- New custom --}}
@@ -52,8 +50,9 @@
                     </label>
 
                     @if ($data->field->type == 'Data')
-                        <input type="text" id="input{{ $data->field->name }}" class="block w-full border-gray-300 rounded"
-                            name="datas[{{ $data->id }}]" value="{{ $data->value }}">
+                        <input type="text" id="input{{ $data->field->name }}"
+                            class="block w-full border-gray-300 rounded" name="datas[{{ $data->id }}]"
+                            value="{{ $data->value }}">
 
                     @elseif ($data->field->type == 'Relationship')
                         <select name="datas[{{ $data->id }}]" id="input{{ $data->field->name }}"
@@ -80,18 +79,18 @@
                     @endif
 
                 </div>
-                
-                
-                @endforeach
-                
-                
-                <button type="submit"
+
+
+            @endforeach
+
+
+            <button type="submit"
                 class="py-2 px-4 bg-green-500 text-white font-semibold shadow-md rounded-lg">Submit</button>
-                
-            </form>
-            
-            {{-- Relationships --}}
-            @if (count($post->relationships))
+
+        </form>
+
+        {{-- Relationships --}}
+        @if (count($post->relationships))
             <div class="mt-3">
                 <label>Relationships</label>
                 <ul>
@@ -123,6 +122,24 @@
                     <button class="text-red-400" type="submit" form="formDelete">Delete</button>
                 </form>
             </div>
+        </div>
+
+
+        {{-- History --}}
+        <div>
+            @foreach ($post->datas as $data)
+                @if ($data->historicals)
+                    <h1>{{ $data->field->name }}</h1>
+                    <ul>
+                        @foreach ($data->historicals as $historical)
+                            <li>
+                                {{ $historical->timestamp }} - {{ $historical->value }}
+                            </li>
+                        @endforeach
+                    </ul>
+
+                @endif
+            @endforeach
         </div>
 
     </div>

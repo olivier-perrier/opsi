@@ -21,4 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/{postType}', [ApiController::class, 'index']);
+Route::get('/realtime/{postType}', [ApiController::class, 'realtime']);
+Route::get('/historical/{postType}', [ApiController::class, 'historical']);

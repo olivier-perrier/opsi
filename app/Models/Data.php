@@ -38,14 +38,9 @@ class Data extends Model
         return $this->belongsTo(Field::class);
     }
 
-    public function dataList()
+    public function historicals()
     {
-        return $this->hasOne(DataList::class);
-    }
-
-    public function dataRelationship()
-    {
-        return $this->hasOne(DataRelationship::class);
+        return $this->hasMany(Historical::class);
     }
 
   

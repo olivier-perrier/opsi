@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
-    public function index(Request $request, PostType $postType)
+    public function realtime(Request $request, PostType $postType)
     {
 
         // Name of the Post
@@ -48,6 +48,51 @@ class ApiController extends Controller
         $q .= "true";
 
         // dd($q);
+
+        // dd(DB::select($q));
+
+        return DB::select($q);
+    }
+
+    public function historical(Request $request, PostType $postType)
+    {
+        // // Name of the Post
+        // $name = $request->input("name");
+
+        // // Parent id of the Post
+        // $parent = $request->input("parent");
+
+        // // On of the Data of the Post
+        // $where = explode(" ", $request->input("where"));
+        // $whereHas = explode(" ", $request->input("whereHas"));
+
+
+        $q = "select avg(t.value) as 'value', Date(t.timestamp) as 'timestamp' ";
+        $q .= "from ( ";
+
+
+        $q .= "select sum(value) as 'value', timestamp as 'timestamp' ";
+        $q .= "from historicals ";
+        $q .= "group by timestamp ";
+        $q .= " ) t ";
+        $q .= "group by Date(t.timestamp) ";
+
+
+
+        // $q = "select avg(value) as 'value', Date(timestamp) as 'timestamp' ";
+        // $q .= "from historicals ";
+        // // $q .= "join datas on datas.id = historicals.data_id ";
+        // // $q .= "join datas on datas.id = historicals.data_id ";
+        // $q .= "group by Date(timestamp) ";
+
+        // $q = "select avg(value) as 'value', year(timestamp) as 'timestamp', month(timestamp)";
+        // $q .= "from historicals ";
+        // $q .= "group by year(timestamp), month(timestamp) ";
+
+
+        // $q .= "true";
+
+        //    dd($q);
 
         // dd(DB::select($q));
 

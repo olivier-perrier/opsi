@@ -6,8 +6,10 @@ use App\Models\Data;
 use App\Models\Post;
 use App\Models\PostType;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 
 class Kernel extends ConsoleKernel
@@ -52,49 +54,53 @@ class Kernel extends ConsoleKernel
             // echo $responseLogin->json()['accessToken'] . "\n";
 
 
-            $url = "https://go.eu1.cloud.cobundu.com/rest/v2/sensoring/devices";
+            $url = "https://go.eu1.cloud.cobundu.com/rest/v2/locations?limit=500";
             $response = Http::withToken($accessToken)->get($url);
             // echo 'starting\n';
 
-            echo count($response->json()) . "\n";
+            echo $response->json()['total'] . "\n";
+            echo count($response->json()['items']) . "\n";
 
-            foreach ($response->json() as $key => $APIsensor) {
+            $locationList = [];
 
-                $post = Post::where('name', $APIsensor['name'])->where('post_type_id', $postTypeId)->where('user_id', $userId)->firstOr(function () use ($APIsensor, $userId, $fieldId) {
+            foreach ($response->json()['items'] as $location) {
 
-                    echo 'firstOr ';
+                array_push($locationList, $location['id']);
 
-                    // $postCreated = Post::firstOrCreate(['name' => $APIsensor['name'], 'post_type_id' => 2, 'user_id' => 1]);
-                    $postCreated = Post::create(['name' => $APIsensor['name'], 'post_type_id' => 2, 'user_id' => $userId]);
+                $post = Post::where('name', $location['id'])->where('post_type_id', $postTypeId)->where('user_id', $userId)->firstOr(function () use ($location, $userId, $fieldId) {
 
-                    foreach ($postCreated->postType->fields as $key => $field) {
+                    echo 'createPost ';
+                    $postCreated = Post::create(['name' => $location['id'], 'post_type_id' => 2, 'user_id' => $userId]);
+
+                    foreach ($postCreated->postType->fields as $field) {
                         echo 'createData ';
                         Data::create(['field_id' => $field->id, 'post_id' => $postCreated->id]);
                     }
 
-                    echo 'endFirstOr ';
-
                     return $postCreated;
-
                 });
-
-                /* upate some values */
-                // Data::updateOrCreate(['field_id' => $fieldId, 'post_id' => $postCreated->id], ['value' => $APIsensor['locationId']]);
 
                 echo $post->id . " ";
 
-                /* update Occupancy value */
-                $url = "https://go.eu1.cloud.cobundu.com/rest/v2/sensoring/sensorvalues?devices=" . $APIsensor['id'] . "&from=latest";
-                $responseSensorValue = Http::withToken($accessToken)->get($url);
+            }
 
-                if (count($responseSensorValue->json())) {
 
-                    $sensorValue = $responseSensorValue->json()[0]['value'];
+            /* update Occupancy value */
+            $url = "https://go.eu1.cloud.cobundu.com/rest/v2/sensoring/locationvalues/get";
+            $responseLocationValue = Http::withToken($accessToken)->withBody(json_encode($locationList), 'application/json')->post($url);
 
-                    // echo $sensorValue;
-                    Data::updateOrCreate(['field_id' => 1, 'post_id' => $post->id], ['value' => $sensorValue]);
+            // echo $responseLocationValue->json() . "\n";
 
-                    echo "updated ";
+            if ($responseLocationValue->successful()) {
+
+                foreach ($responseLocationValue->json() as $locationValue) {
+
+                    $post = Post::where('name', $location['id'])->first();
+
+                    $data = Data::updateOrCreate(['field_id' => 1, 'post_id' => $post->id], ['value' => $locationValue['occupancy']]);
+                    $data->historicals()->create(['value' => $locationValue['occupancy'], 'timestamp' => Carbon::now()]);
+
+                    // echo "post " . $post->id . " updated ";
                 }
 
             }

@@ -10,6 +10,7 @@ use App\Models\Field;
 use App\Models\Organization;
 use App\Models\PostType;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -119,6 +120,9 @@ class PostController extends Controller
                     
                     $data->update(['value' => $dataValue]);
                     // dd($data);
+
+                    $data->historicals()->create(['value' => $dataValue, 'timestamp' => Carbon::now()]);
+
                     
                 } else if ($data->field->type == 'Relationship') {
                     
