@@ -15,7 +15,7 @@ class CreateHistoricalsTable extends Migration
     {
         Schema::create('historicals', function (Blueprint $table) {
             $table->id();
-            $table->string("value");
+            $table->string("value")->nullable();
             $table->timestamp("timestamp");
             $table->foreignId("data_id");
             $table->timestamps();
